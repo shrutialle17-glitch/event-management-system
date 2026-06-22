@@ -7,10 +7,16 @@ dotenv.config();
 
 connectDB();
 
+const registrationRoutes = require('./routes/registration.routes');
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// Mount routers
+app.use('/api/registrations', registrationRoutes);
+
 
 app.get("/", (req, res) => {
   res.send("API Running");
