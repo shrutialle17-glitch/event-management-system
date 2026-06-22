@@ -6,6 +6,8 @@ const {
   getEventById,
   updateEvent,
   deleteEvent,
+  getMyEvents,
+  uploadEventBanner,
 } = require("../controllers/event.controller");
 
 const upload = require("../middleware/upload.middleware");
@@ -16,17 +18,33 @@ const router = express.Router();
 
 router.post(
   "/",
-  verifyToken,
+  //verifyToken,
   upload.single("banner"),
   createEvent
 );
 
 router.get("/", getAllEvents);
 
+router.get(
+  "/organizer/mine",
+  //verifyToken,
+  getMyEvents
+);
+
 router.get("/:id", getEventById);
 
-router.put("/:id", verifyToken, updateEvent);
+router.put("/:id", 
+  //verifyToken, 
+  updateEvent);
 
-router.delete("/:id", verifyToken, deleteEvent);
+router.post(
+  "/:id/banner",
+  //verifyToken,
+  upload.single("banner"),
+  uploadEventBanner
+);
+
+router.delete("/:id", verifyToken, 
+  deleteEvent);
 
 module.exports = router;
