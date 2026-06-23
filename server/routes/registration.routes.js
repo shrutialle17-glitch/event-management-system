@@ -6,7 +6,7 @@ const {
   //getEventRegistrations,
   cancelRegistration,
   getWaitlistPosition,
-  //getTicketPdf,
+  getTicketPdf,
   //exportRegistrationsCsv,
 } = require('../controllers/registration.controller');
 //const { verifyToken } = require('../middleware/auth.middleware');
@@ -20,6 +20,6 @@ router.get('/mine', getMyRegistrations);
 //router.get('/event/:eventId/export', requireRole(['organizer', 'admin']), exportRegistrationsCsv);
 router.patch('/:id/cancel', cancelRegistration);
 //router.get('/:id/waitlist-position', getWaitlistPosition);
-//router.get('/:id/pdf', getTicketPdf);
+router.get('/:id/pdf', getTicketPdf);
 
 module.exports = router;
