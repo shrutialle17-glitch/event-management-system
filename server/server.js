@@ -9,7 +9,7 @@ dotenv.config();
 
 // Route files
 //const authRoutes = require('./routes/auth.routes');
-//const eventRoutes = require('./routes/event.routes');
+const eventRoutes = require('./routes/event.routes');
 const registrationRoutes = require('./routes/registration.routes');
 const qrRoutes = require('./routes/qr.routes');
 const feedbackRoutes = require('./routes/feedback.routes');
@@ -42,7 +42,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Mount routers
 //app.use('/api/auth', authRoutes);
-//app.use('/api/events', eventRoutes);
+app.use('/api/events', eventRoutes);
 app.use('/api/registrations', registrationRoutes);
 app.use('/api/qr', qrRoutes);
 app.use('/api/feedback', feedbackRoutes);

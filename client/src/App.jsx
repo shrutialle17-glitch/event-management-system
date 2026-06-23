@@ -1,6 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
+<<<<<<< HEAD
 //import { AuthProvider } from './context/AuthContext';
+=======
+import { AuthProvider } from './context/AuthContext';
+>>>>>>> origin/event-organizer
 import AppRoutes from './routes/AppRoutes';
 import { Toaster } from 'react-hot-toast';
 
