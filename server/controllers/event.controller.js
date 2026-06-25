@@ -1,5 +1,5 @@
 const Event = require("../models/Event");
-
+const uploadToCloudinary = require("../utils/cloudinaryUpload");
 // Create Event
 const createEvent = async (req, res) => {
   try {
@@ -182,7 +182,7 @@ const getMyEvents = async (req, res) => {
 const uploadEventBanner = async (req, res) => {
   try {
     const event = await Event.findById(req.params.id);
-
+  
     if (!event) {
       return res.status(404).json({
         success: false,
@@ -207,7 +207,8 @@ const uploadEventBanner = async (req, res) => {
       });
     }
 
-    event.bannerUrl = req.file.path;
+    const result = await uploadToCloudinary(req.file.buffer);
+    event.bannerUrl = result.secure_url;
 
     await event.save();
 

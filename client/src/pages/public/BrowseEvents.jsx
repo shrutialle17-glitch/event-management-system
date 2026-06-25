@@ -25,8 +25,11 @@ const BrowseEvents = () => {
         if (categoryParam) url += `category=${categoryParam}&`;
         if (searchParam)   url += `search=${searchParam}&`;
         if (timeParam)     url += `time=${timeParam}&`;
+        //const res = await axiosInstance.get(url);
+        //setEvents(res.data.data.events);
         const res = await axiosInstance.get(url);
-        setEvents(res.data.data.events);
+        console.log("Events API Response:", res.data);
+        setEvents(Array.isArray(res.data.data) ? res.data.data : []);
       } catch (err) {
         console.error('Failed to fetch events', err);
       } finally {
@@ -156,7 +159,7 @@ const BrowseEvents = () => {
         {!loading && (
           <div className="flex items-center justify-between mb-6">
             <p className="text-sm text-textMuted font-medium">
-              <span className="font-bold text-slate-900">{events.length}</span> events found
+              <span className="font-bold text-slate-900">{events?.length || 0}</span> events found
               {activeFiltersCount > 0 && <span className="ml-2 px-2 py-0.5 bg-primary/10 text-primary text-xs font-bold rounded-full">{activeFiltersCount} filter{activeFiltersCount > 1 ? 's' : ''} active</span>}
             </p>
             {activeFiltersCount > 0 && (
