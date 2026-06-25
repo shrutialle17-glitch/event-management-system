@@ -1,44 +1,41 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Button from '../common/Button';
-import { Calendar } from 'lucide-react';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Calendar } from "lucide-react";
 
 const Navbar = () => {
   return (
-    <nav className="sticky top-0 z-50 w-full glass-card border-b border-gray-200 px-4 py-3">
-      <div className="container mx-auto flex items-center justify-between">
+    <nav className="bg-white shadow-sm border-b">
+      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+        
+        {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
-          <div className="bg-primary text-white p-1.5 rounded-lg">
-            <Calendar className="w-6 h-6" />
-          </div>
-          <span className="text-xl font-bold text-text hidden sm:block">
-            Eventio
+          <Calendar className="w-6 h-6 text-green-600" />
+          <span className="text-xl font-bold">
+            Event<span className="text-green-600">io</span>
           </span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-6">
+        {/* Links */}
+        <div className="flex items-center gap-6">
           <Link
             to="/"
-            className="text-textMuted hover:text-primary font-medium transition-colors"
+            className="text-gray-700 hover:text-green-600 font-medium"
           >
             Home
           </Link>
 
           <Link
-            to="/events"
-            className="text-textMuted hover:text-primary font-medium transition-colors"
+            to="/login"
+            className="text-gray-700 hover:text-green-600 font-medium"
           >
-            Browse Events
-          </Link>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <Link to="/login">
-            <Button variant="ghost">Login</Button>
+            Login
           </Link>
 
-          <Link to="/register">
-            <Button variant="primary">Sign Up</Button>
+          <Link
+            to="/register"
+            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+          >
+            Register
           </Link>
         </div>
       </div>

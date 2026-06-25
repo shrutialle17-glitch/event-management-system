@@ -1,6 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-//import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from './context/AuthContext';
 import AppRoutes from './routes/AppRoutes';
 import { Toaster } from 'react-hot-toast';
 
@@ -9,9 +8,7 @@ import Footer from './components/layout/Footer';
 
 function App() {
   return (
-    //<AuthProvider>
-      //<NotificationProvider>
-        <Router>
+    <AuthProvider>
           <div className="min-h-screen bg-background text-text flex flex-col font-sans">
             <Navbar />
             <main className="flex-grow flex flex-col">
@@ -43,9 +40,7 @@ function App() {
               },
             }}
           />
-        </Router>
-        //</NotificationProvider>
-    //</AuthProvider>
+    </AuthProvider>
   );
 }
 
