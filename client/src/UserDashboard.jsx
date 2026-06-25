@@ -3,22 +3,25 @@ import "./App.css";
 function UserDashboard() {
   return (
     <div className="dashboard">
-      <h1>👋 Welcome Back</h1>
+      <div className="dashboard-header">
+        <h1>👋 Welcome Back</h1>
+        <p>Manage your events and memories</p>
+      </div>
 
       <div className="dashboard-grid">
         <div className="dashboard-card">
           <h2>📌 Registered Events</h2>
-          <p>View all events you have registered for.</p>
+          <p>View all your registered events.</p>
         </div>
 
         <div className="dashboard-card">
           <h2>✅ Attended Events</h2>
-          <p>Track events you attended.</p>
+          <p>Track events you have attended.</p>
         </div>
 
         <div className="dashboard-card">
           <h2>📸 My Memories</h2>
-          <p>See event photos and memories.</p>
+          <p>Access event photos and memories.</p>
         </div>
       </div>
     </div>
