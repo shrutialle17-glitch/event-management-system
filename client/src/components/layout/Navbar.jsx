@@ -1,75 +1,24 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Calendar } from "lucide-react";
-
-const Navbar = () => {
-  return (
-    <nav className="bg-white shadow-sm border-b">
-      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-        
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <Calendar className="w-6 h-6 text-green-600" />
-          <span className="text-xl font-bold">
-            Event<span className="text-green-600">io</span>
-          </span>
-        </Link>
-
-        {/* Links */}
-        <div className="flex items-center gap-6">
-          <Link
-            to="/"
-            className="text-gray-700 hover:text-green-600 font-medium"
-          >
-            Home
-          </Link>
-
-          <Link
-            to="/login"
-            className="text-gray-700 hover:text-green-600 font-medium"
-          >
-            Login
-          </Link>
-
-          <Link
-            to="/register"
-            className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
-          >
-            Register
-          </Link>
-        </div>
-      </div>
-    </nav>
-  );
-};
-
-export default Navbar;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-//import { useAuth } from '../../context/AuthContext';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import Button from '../common/Button';
-import { Calendar, UserCircle, LogOut } from 'lucide-react';
+import { Calendar, LogOut, Menu, X } from 'lucide-react';
+import NotificationBell from '../notifications/NotificationBell';
 
 const Navbar = () => {
-  //const { user, logout } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  useEffect(() => { setMobileOpen(false); }, [location.pathname]);
 
   const handleLogout = async () => {
     await logout();
@@ -82,51 +31,159 @@ const Navbar = () => {
     return '/dashboard';
   };
 
+  const isActive = (path) => location.pathname === path || (path !== '/' && location.pathname.startsWith(path));
+
+  const navLinkClass = (path) =>
+    `relative text-sm font-semibold pb-0.5 transition-colors duration-200 ${
+      isActive(path) ? 'text-primary' : 'text-slate-600 hover:text-slate-900'
+    }`;
+
   return (
-    <nav className="sticky top-0 z-50 w-full glass-card border-b border-gray-200 px-4 py-3">
-      <div className="container mx-auto flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <div className="bg-primary text-white p-1.5 rounded-lg">
-            <Calendar className="w-6 h-6" />
+    <>
+      <nav
+        className="sticky top-0 z-50 w-full transition-all duration-300"
+        style={{
+          background: scrolled ? 'rgba(255,255,255,0.96)' : 'rgba(255,255,255,0.92)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          borderBottom: scrolled ? '1px solid rgba(15,23,42,0.08)' : '1px solid rgba(15,23,42,0.05)',
+          boxShadow: scrolled ? '0 2px 20px rgba(15,23,42,0.08)' : 'none',
+        }}
+      >
+        <div className="container mx-auto flex items-center justify-between px-4 h-16">
+          {/* ── Logo ── */}
+          <Link to="/" className="flex items-center gap-2.5 group flex-shrink-0">
+            <div
+              className="p-2 rounded-xl flex-shrink-0"
+              style={{ background: 'linear-gradient(135deg, #10b981 0%, #06b6d4 100%)', boxShadow: '0 4px 12px rgba(16,185,129,0.3)' }}
+            >
+              <Calendar className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-lg font-bold text-slate-900 tracking-tight">
+              Event<span style={{ color: '#10b981' }}>io</span>
+            </span>
+          </Link>
+
+          {/* ── Desktop Nav Links ── */}
+          <div className="hidden md:flex items-center gap-7">
+            <Link to="/" className={navLinkClass('/')}>Home</Link>
+            <Link to="/events" className={navLinkClass('/events')}>Browse Events</Link>
+            {user && (
+              <Link to={getDashboardLink()} className={navLinkClass(getDashboardLink())}>
+                Dashboard
+              </Link>
+            )}
           </div>
-          <span className="text-xl font-bold text-text hidden sm:block">Eventio</span>
-        </Link>
 
-        <div className="hidden md:flex items-center gap-6">
-          <Link to="/" className="text-textMuted hover:text-primary font-medium transition-colors">Home</Link>
-          <Link to="/events" className="text-textMuted hover:text-primary font-medium transition-colors">Browse Events</Link>
-        </div>
+          {/* ── Right Side Actions ── */}
+          <div className="flex items-center gap-2 flex-shrink-0">
+            {user ? (
+              <>
+                <NotificationBell />
+                <Link
+                  to={getDashboardLink()}
+                  className="flex items-center gap-2.5 hover:bg-slate-100 px-2.5 py-1.5 rounded-xl transition-all duration-200"
+                >
+                  {user.avatarUrl ? (
+                    <img
+                      src={user.avatarUrl}
+                      alt="Avatar"
+                      className="w-8 h-8 rounded-full object-cover ring-2 ring-white shadow-sm"
+                    />
+                  ) : (
+                    <div
+                      className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0"
+                      style={{ background: 'linear-gradient(135deg, #10b981 0%, #06b6d4 100%)' }}
+                    >
+                      {user.name?.charAt(0).toUpperCase()}
+                    </div>
+                  )}
+                  <span className="text-sm font-semibold text-slate-700 hidden sm:block">
+                    {user.name?.split(' ')[0]}
+                  </span>
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  title="Log out"
+                  className="p-2 rounded-xl text-slate-400 hover:text-red-500 hover:bg-red-50 transition-all duration-200"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="hidden sm:block">
+                  <button className="px-4 py-2 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all duration-200">
+                    Log in
+                  </button>
+                </Link>
+                <Link to="/register">
+                  <button
+                    className="px-4 py-2 text-sm font-semibold text-white rounded-xl transition-all duration-200 hover:-translate-y-px"
+                    style={{
+                      background: 'linear-gradient(135deg, #10b981 0%, #06b6d4 100%)',
+                      boxShadow: '0 4px 12px rgba(16,185,129,0.35)',
+                    }}
+                  >
+                    Get Started
+                  </button>
+                </Link>
+              </>
+            )}
 
-        <div className="flex items-center gap-3">
-          {user ? (
-            <>
-              <Link to={getDashboardLink()} className="flex items-center gap-2 hover:bg-gray-100 p-2 rounded-lg transition-colors">
-                {user.avatarUrl ? (
-                  <img src={user.avatarUrl} alt="Avatar" className="w-8 h-8 rounded-full object-cover" />
-                ) : (
-                  <UserCircle className="w-8 h-8 text-gray-400" />
-                )}
-                <span className="text-sm font-medium hidden sm:block">{user.name}</span>
-              </Link>
-              <Button variant="ghost" onClick={handleLogout} className="px-2">
-                <LogOut className="w-5 h-5 text-textMuted hover:text-red-500 transition-colors" />
-              </Button>
-            </>
-          ) : (
-            <>
-              <Link to="/login">
-                <Button variant="ghost">Login</Button>
-              </Link>
-              <Link to="/register">
-                <Button variant="primary">Sign Up</Button>
-              </Link>
-            </>
-          )}
+            {/* Mobile hamburger */}
+            <button
+              className="md:hidden p-2 rounded-xl text-slate-500 hover:bg-slate-100 transition-colors ml-1"
+              onClick={() => setMobileOpen(o => !o)}
+            >
+              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+      {/* ── Mobile Drawer ── */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-40 md:hidden">
+          <div
+            className="absolute inset-0 bg-black/30"
+            style={{ backdropFilter: 'blur(4px)' }}
+            onClick={() => setMobileOpen(false)}
+          />
+          <div className="absolute top-16 left-0 right-0 bg-white border-b border-slate-100 shadow-xl p-4 flex flex-col gap-1">
+            <Link to="/" className="px-4 py-3 rounded-xl text-slate-700 font-semibold hover:bg-slate-50 transition-colors">
+              Home
+            </Link>
+            <Link to="/events" className="px-4 py-3 rounded-xl text-slate-700 font-semibold hover:bg-slate-50 transition-colors">
+              Browse Events
+            </Link>
+            {user && (
+              <Link to={getDashboardLink()} className="px-4 py-3 rounded-xl text-slate-700 font-semibold hover:bg-slate-50 transition-colors">
+                Dashboard
+              </Link>
+            )}
+            {!user && (
+              <div className="flex gap-2 mt-3 pt-3 border-t border-slate-100">
+                <Link to="/login" className="flex-1">
+                  <button className="w-full py-2.5 border-2 border-slate-200 rounded-xl text-sm font-semibold text-slate-700 hover:border-slate-300 transition-colors">
+                    Log in
+                  </button>
+                </Link>
+                <Link to="/register" className="flex-1">
+                  <button
+                    className="w-full py-2.5 text-sm font-semibold text-white rounded-xl"
+                    style={{ background: 'linear-gradient(135deg, #10b981 0%, #06b6d4 100%)' }}
+                  >
+                    Get Started
+                  </button>
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
 export default Navbar;
-*/

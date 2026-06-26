@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-//const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const Registration = require("../models/Registration");
 const Attendance = require("../models/Attendance");
 const Event = require("../models/Event");
@@ -18,13 +18,13 @@ const getQR = async (req, res) => {
       return sendError(res, 404, "Registration not found");
     }
 
-    /*Access control: only the user who registered, or an organizer/admin can view it
+    A//ccess control: only the user who registered, or an organizer/admin can view it
     if (
       registration.user.toString() !== req.user._id.toString() &&
       req.user.role === 'user'
     ) {
       return sendError(res, 403, 'Not authorized to view this QR code');
-    }*/
+    }
 
     return sendSuccess(res, 200, "QR fetched successfully", {
       qrImageUrl: registration.qrImageUrl,
@@ -37,7 +37,7 @@ const getQR = async (req, res) => {
 // @desc    Validate a scanned QR code
 // @route   POST /api/qr/validate
 // @access  Protected (Organizer, Admin)
-/*
+
 const validateQR = async (req, res) => {
   const { qrToken } = req.body;
 
@@ -160,7 +160,7 @@ const checkInQR = async (req, res) => {
     // Badge checks
     const attendanceCount = await Attendance.countDocuments({ user: registration.user._id });
     if (attendanceCount === 1) await checkAndAwardBadges(registration.user._id, 'first-event');
-    if (attendanceCount === 5) await checkAndAwardBadges(registration.user._id, 'five-events');
+    if (attendanceCount === 5) await checkAndAwardBadges(registration.user._id, 'five-events');*/
 
     return sendSuccess(res, 200, 'Check-in successful', attendance);
 
@@ -212,148 +212,16 @@ const manualCheckIn = async (req, res) => {
       event: registration.event,
     });
 
-    //Badge checks
+    /*Badge checks
     const attendanceCount = await Attendance.countDocuments({ user: registration.user._id });
     if (attendanceCount === 1) await checkAndAwardBadges(registration.user._id, 'first-event');
-    if (attendanceCount === 5) await checkAndAwardBadges(registration.user._id, 'five-events');
+    if (attendanceCount === 5) await checkAndAwardBadges(registration.user._id, 'five-events');*/
 
     return sendSuccess(res, 200, 'Manual check-in successful', attendance);
   } catch (error) {
     return sendError(res, 500, error.message);
   }
     
-};*/
-
-const validateQR = async (req, res) => {
-try {
-const { qrToken } = req.body;
-
-if (!qrToken) {
-  return sendError(res, 400, 'QR Token is required');
-}
-
-const registration = await Registration.findById(qrToken)
-  .populate('user', 'name email')
-  .populate('event', 'title date venue');
-
-if (!registration) {
-  return sendError(res, 404, 'Invalid QR Code');
-}
-
-if (registration.status === 'cancelled') {
-  return sendError(res, 400, 'Registration cancelled');
-}
-
-const existingAttendance = await Attendance.findOne({
-  registration: registration._id,
-});
-
-if (existingAttendance) {
-  return sendError(res, 409, 'Already checked in');
-}
-
-return sendSuccess(
-  res,
-  200,
-  'QR Code is valid',
-  {
-    registration,
-  }
-);
-
-} catch (error) {
-return sendError(res, 500, error.message);
-}
-};
-
-const checkInQR = async (req, res) => {
-  try {
-    const { qrToken } = req.body;
-
-    if (!qrToken) {
-      return sendError(res, 400, "QR Token is required");
-    }
-
-    const registration = await Registration.findById(qrToken)
-      .populate("user")
-      .populate("event");
-
-    if (!registration) {
-      return sendError(res, 404, "Registration not found");
-    }
-
-    if (registration.status === "cancelled") {
-      return sendError(res, 400, "Registration cancelled");
-    }
-
-    if (registration.status === "checked-in") {
-      return sendError(res, 400, "Already checked in");
-    }
-
-    const existingAttendance = await Attendance.findOne({
-      registration: registration._id,
-    });
-
-    if (existingAttendance) {
-      return sendError(res, 409, "Already checked in");
-    }
-
-    const attendance = await Attendance.create({
-      registration: registration._id,
-      event: registration.event._id,
-      user: registration.user._id,
-    });
-
-    registration.status = "checked-in";
-    await registration.save();
-
-    return sendSuccess(res, 200, "Check-in successful", attendance);
-  } catch (error) {
-    return sendError(res, 500, error.message);
-  }
-};
-
-const manualCheckIn = async (req, res) => {
-  try {
-    const { registrationId } = req.body;
-
-    const registration = await Registration.findById(registrationId)
-      .populate("user")
-      .populate("event");
-
-    if (!registration) {
-      return sendError(res, 404, "Registration not found");
-    }
-
-    if (registration.status === "cancelled") {
-      return sendError(res, 400, "Registration cancelled");
-    }
-
-    if (registration.status === "checked-in") {
-      return sendError(res, 400, "Already checked in");
-    }
-
-    const existingAttendance = await Attendance.findOne({
-      registration: registration._id,
-    });
-
-    if (existingAttendance) {
-      return sendError(res, 409, "Already checked in");
-    }
-
-    const attendance = await Attendance.create({
-      registration: registration._id,
-      event: registration.event._id,
-      user: registration.user._id,
-    });
-
-    registration.status = "checked-in";
-    await registration.save();
-
-    return sendSuccess(res, 200, "Manual check-in successful", attendance);
-  } catch (error) {
-    return sendError(res, 500, error.message);
-  }
 };
 
 module.exports = {

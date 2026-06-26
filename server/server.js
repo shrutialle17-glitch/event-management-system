@@ -6,6 +6,7 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const { connectCloudinary } = require('./config/cloudinary');
 dotenv.config();
+const { errorHandler } = require('./middleware/errorHandler.middleware');
 
 // Route files
 const authRoutes = require('./routes/auth.routes');

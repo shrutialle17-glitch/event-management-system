@@ -1,4 +1,6 @@
 const Event = require("../models/Event");
+const User = require('../models/User');
+const Registration = require('../models/Registration');
 const uploadToCloudinary = require("../utils/cloudinaryUpload");
 // Create Event
 const createEvent = async (req, res) => {
@@ -91,7 +93,7 @@ const updateEvent = async (req, res) => {
       });
     }
 
-    /* if (
+    if (
       event.organizer.toString() !==
       req.user._id.toString()
     ) {
@@ -99,7 +101,7 @@ const updateEvent = async (req, res) => {
         success: false,
         message: "Not authorized",
       });
-    }*/
+    }
 
     const updatedEvent = await Event.findByIdAndUpdate(
       req.params.id,
@@ -190,7 +192,7 @@ const uploadEventBanner = async (req, res) => {
       });
     }
 
-   /* if (
+    if (
       event.organizer.toString() !==
       req.user._id.toString()
     ) {
@@ -198,7 +200,7 @@ const uploadEventBanner = async (req, res) => {
         success: false,
         message: "Not authorized",
       });
-    }*/
+    }
 
     if (!req.file) {
       return res.status(400).json({
@@ -225,12 +227,57 @@ const uploadEventBanner = async (req, res) => {
   }
 };
 
+const cancelEvent = async (req, res) => {
+  try {
+    const event = await Event.findById(req.params.id);
+
+    if (!event) {
+      return sendError(res, 404, 'Event not found');
+    }
+
+    // Ownership check
+    if (event.organizer.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
+      return sendError(res, 403, 'Not authorized to cancel this event');
+    }
+
+    if (event.status === 'cancelled') {
+      return sendError(res, 400, 'Event is already cancelled');
+    }
+
+    event.status = 'cancelled';
+    await event.save();
+
+
+    if (recipientIds.length > 0) {
+      await notify({
+        recipientIds,
+        type: 'event-cancelled',
+        title: `Event Cancelled: ${event.title}`,
+        message: `The event ${event.title} has been cancelled.`,
+        eventId: event._id,
+        event: event,
+      });
+    }
+
+    // Cancel all active registrations
+    await Registration.updateMany(
+      { event: event._id, status: 'registered' },
+      { $set: { status: 'cancelled' } }
+    );
+
+    return sendSuccess(res, 200, 'Event cancelled successfully', event);
+  } catch (error) {
+    return sendError(res, 500, error.message);
+  }
+};
+
 module.exports = {
   createEvent,
   getAllEvents,
   getEventById,
   updateEvent,
   deleteEvent,
+  cancelEvent,
   getMyEvents,
   uploadEventBanner,
 };

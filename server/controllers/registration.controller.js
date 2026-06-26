@@ -15,7 +15,7 @@ const { nanoid } = require("nanoid");
 // @access  Protected (User)
 const createRegistration = async (req, res) => {
   const { eventId } = req.body;
-  const userId = "6a393447274ca175f5410a1a";
+  const userId = req.user._id;
 
   try {
     const event = await Event.findById(eventId);
@@ -125,17 +125,9 @@ const createRegistration = async (req, res) => {
 // @access  Protected (User)
 const getMyRegistrations = async (req, res) => {
   try {
-    //const registrations = await Registration.find({ user: req.user._id })
-    //.populate('event', 'title date time venue bannerUrl status')
-    //.sort({ createdAt: -1 });
-
-    const userId = "6a393447274ca175f5410a1a";
-
-    const registrations = await Registration.find({
-      user: userId,
-    })
-      .populate("event", "title date time venue bannerUrl status")
-      .sort({ createdAt: -1 });
+    const registrations = await Registration.find({ user: req.user._id })
+    .populate('event', 'title date time venue bannerUrl status')
+    .sort({ createdAt: -1 });
 
     return sendSuccess(
       res,
@@ -151,7 +143,7 @@ const getMyRegistrations = async (req, res) => {
 // @desc    Get registrations for an event
 // @route   GET /api/registrations/event/:eventId
 // @access  Protected (Organizer - own event, Admin)
-/*const getEventRegistrations = async (req, res) => {
+const getEventRegistrations = async (req, res) => {
   try {
     const event = await Event.findById(req.params.eventId);
     if (!event) return sendError(res, 404, 'Event not found');
@@ -168,7 +160,7 @@ const getMyRegistrations = async (req, res) => {
   } catch (error) {
     return sendError(res, 500, error.message);
   }
-};*/
+};
 
 // @desc    Cancel a registration
 // @route   PATCH /api/registrations/:id/cancel
@@ -178,13 +170,8 @@ const cancelRegistration = async (req, res) => {
     const registration = await Registration.findById(req.params.id);
     if (!registration) return sendError(res, 404, "Registration not found");
 
-    //if (registration.user.toString() !== req.user._id.toString()) {
-    //  return sendError(res, 403, 'Not authorized to cancel this registration');
-    //}
-    const userId = "6a393447274ca175f5410a1a";
-
-    if (registration.user.toString() !== userId) {
-      return sendError(res, 403, "Not authorized to cancel this registration");
+    if (registration.user.toString() !== req.user._id.toString()) {
+      return sendError(res, 403, 'Not authorized to cancel this registration');
     }
 
     if (registration.status === "checked-in") {
@@ -288,7 +275,7 @@ const getWaitlistPosition = async (req, res) => {
     return sendError(res, 500, error.message);
   }
 };
-/*
+
 const getTicketPdf = async (req, res) => {
   try {
     const registration = await Registration.findById(req.params.id).populate(
@@ -314,8 +301,8 @@ const getTicketPdf = async (req, res) => {
       return sendError(res, 500, error.message);
     }
   }
-};*/
-
+};
+/*
 const getTicketPdf = async (req, res) => {
   try {
     const registration = await Registration.findById(req.params.id)
@@ -340,12 +327,12 @@ const getTicketPdf = async (req, res) => {
     console.error(error);
     return sendError(res, 500, error.message);
   }
-};
+};*/
 
 module.exports = {
   createRegistration,
   getMyRegistrations,
-  //getEventRegistrations,
+  getEventRegistrations,
   cancelRegistration,
   getTicketPdf,
   getWaitlistPosition,

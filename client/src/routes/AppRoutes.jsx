@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import ProtectedRoute from "./ProtectedRoute";
 import DashboardLayout from "../components/layout/DashboardLayout";
@@ -9,6 +9,7 @@ import OrganizerDashboard from "../pages/organizer/OrganizerDashboard";
 import CreateEvent from "../pages/organizer/CreateEvent";
 import EditEvent from "../pages/organizer/EditEvent";
 import EventAnalytics from "../pages/organizer/EventAnalytics";
+import QRScanner from "../pages/organizer/QRScanner";
 
 
 import BrowseEvents from "../pages/public/BrowseEvents";
@@ -22,7 +23,7 @@ import ResetPassword from '../pages/public/ResetPassword';
 import UserDashboard from '../pages/user/UserDashboard';
 import ProfileSettings from '../pages/user/ProfileSettings';
 import MyTickets from "../pages/user/MyTickets";
-import QRScanner from "../pages/organizer/QRScanner";
+
 
 const NotFound = () => (
   <div className="p-8 text-center text-2xl font-bold">404 - Page Not Found</div>
@@ -72,7 +73,7 @@ const AppRoutes = () => {
         
 
         <Route path="/organizer/scan" element={<ProtectedRoute allowedRoles={['organizer', 'admin']}><QRScanner /></ProtectedRoute>} />
-        <Route path="/organizer/events/:id/feedback" element={<ProtectedRoute allowedRoles={['organizer', 'admin']}><EventFeedbackGallery /></ProtectedRoute>} />
+  
 
       </Route>
       {/* Fallback */}

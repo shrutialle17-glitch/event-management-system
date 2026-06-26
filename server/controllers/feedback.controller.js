@@ -1,6 +1,6 @@
 const Feedback = require("../models/Feedback");
 const Event = require("../models/Event");
-const Attendance = require("../models/Attendance");
+const Registration = require('../models/Registration');
 //const { checkAndAwardBadges } = require('../utils/checkAndAwardBadges');
 const { sendSuccess, sendError } = require("../utils/apiResponse");
 const mongoose = require("mongoose");
@@ -10,24 +10,21 @@ const mongoose = require("mongoose");
 // @access  Protected (User)
 const createFeedback = async (req, res) => {
   const { eventId, rating, comment } = req.body;
-  //const userId = req.user._id;
-  const userId = "6a393447274ca175f5410a1a";
+  const userId = req.user._id;
 
   try {
     const event = await Event.findById(eventId);
     if (!event) return sendError(res, 404, "Event not found");
 
-    const attendance = await Attendance.findOne({
+     // Only users who were checked-in at the event can leave feedback
+    const registration = await Registration.findOne({
       user: userId,
       event: eventId,
+      status: 'checked-in',
     });
 
-    if (!attendance) {
-      return sendError(
-        res,
-        403,
-        "You must attend the event before submitting feedback",
-      );
+    if (!registration) {
+      return sendError(res, 403, 'Only attendees who checked in to this event can submit feedback');
     }
     // Create feedback (unique compound index will throw error if user already reviewed)
     let feedback;
