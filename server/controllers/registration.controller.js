@@ -2,13 +2,14 @@ const Registration = require("../models/Registration");
 const Event = require("../models/Event");
 const User = require("../models/User");
 const { generateQR } = require("../utils/generateQR");
-const  generateTicket  = require("../utils/generateTicket");
-//const notify = require('../utils/notify');
-//const sendEmail = require('../utils/sendEmail');
-//const { checkAndAwardBadges } = require('../utils/checkAndAwardBadges');
-//const { waitlistTemplate } = require('../utils/emailTemplates');
+const generateTicket = require("../utils/generateTicket");
+const notify = require("../utils/notify");
+const sendEmail = require("../utils/sendEmail");
+const { checkAndAwardBadges } = require("../utils/checkAndAwardBadges");
+const { waitlistTemplate } = require("../utils/emailTemplates");
 const { sendSuccess, sendError } = require("../utils/apiResponse");
 const { nanoid } = require("nanoid");
+const Feedback = require("../models/Feedback");
 
 // @desc    Register for an event
 // @route   POST /api/registrations
@@ -82,16 +83,15 @@ const createRegistration = async (req, res) => {
         throw err;
       }
     }
-    /*
+
     if (isWaitlisted) {
       await sendEmail({
         email: req.user.email,
         subject: `You're on the waitlist for ${event.title}`,
         html: waitlistTemplate(req.user, event, waitlistPosition),
       });
-      return sendSuccess(res, 201, 'Added to waitlist', registration);
+      return sendSuccess(res, 201, "Added to waitlist", registration);
     }
-  */
 
     // Generate QR code and upload to Cloudinary
     const { qrToken, qrImageUrl, qrBuffer } = await generateQR(
@@ -109,10 +109,38 @@ const createRegistration = async (req, res) => {
     await event.save();
 
     // Send confirmation email + in-app notification
+    await notify({
+      recipientIds: [req.user._id],
+      type: "registration-confirmation",
+      title: `Registration Confirmed: ${event.title}`,
+      message: `You have successfully registered for ${event.title}.`,
+      eventId: event._id,
+      event: event,
+      ticketId: ticketId,
+      attachments: [
+        {
+          filename: "ticket-qr.png",
+          content: qrBuffer,
+        },
+      ],
+    });
 
     // Notify organizer
+    await notify({
+      recipientIds: [event.organizer],
+      type: "new-registration-organizer",
+      title: "New registration",
+      message: `${req.user.name} just registered for ${event.title}`,
+      eventId: event._id,
+      emailTemplateData: { event, registrant: req.user },
+    });
 
     // Check early-bird badge
+    const daysUntilEvent =
+      (new Date(event.date) - new Date()) / (1000 * 60 * 60 * 24);
+    if (daysUntilEvent > 7) {
+      await checkAndAwardBadges(req.user._id, "early-bird");
+    }
 
     return sendSuccess(res, 201, "Registration successful", registration);
   } catch (error) {
@@ -123,22 +151,40 @@ const createRegistration = async (req, res) => {
 // @desc    Get user's registrations
 // @route   GET /api/registrations/mine
 // @access  Protected (User)
+
 const getMyRegistrations = async (req, res) => {
   try {
     const registrations = await Registration.find({ user: req.user._id })
-    .populate('event', 'title date time venue bannerUrl status')
-    .sort({ createdAt: -1 });
+      .populate("event", "title date time venue bannerUrl status")
+      .sort({ createdAt: -1 });
+
+    // Check feedback for every registration
+    const registrationsWithFeedback = await Promise.all(
+      registrations.map(async (reg) => {
+        const feedback = await Feedback.findOne({
+          user: req.user._id,
+          event: reg.event._id,
+        });
+
+        return {
+          ...reg.toObject(),
+          hasFeedback: !!feedback,
+        };
+      })
+    );
 
     return sendSuccess(
       res,
       200,
       "Registrations fetched successfully",
-      registrations,
+      registrationsWithFeedback
     );
   } catch (error) {
     return sendError(res, 500, error.message);
   }
 };
+
+
 
 // @desc    Get registrations for an event
 // @route   GET /api/registrations/event/:eventId
@@ -146,17 +192,25 @@ const getMyRegistrations = async (req, res) => {
 const getEventRegistrations = async (req, res) => {
   try {
     const event = await Event.findById(req.params.eventId);
-    if (!event) return sendError(res, 404, 'Event not found');
+    if (!event) return sendError(res, 404, "Event not found");
 
-    if (event.organizer.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
-      return sendError(res, 403, 'Not authorized to view these registrations');
+    if (
+      event.organizer.toString() !== req.user._id.toString() &&
+      req.user.role !== "admin"
+    ) {
+      return sendError(res, 403, "Not authorized to view these registrations");
     }
 
     const registrations = await Registration.find({ event: req.params.eventId })
-      .populate('user', 'name email phone avatarUrl')
+      .populate("user", "name email phone avatarUrl")
       .sort({ createdAt: -1 });
 
-    return sendSuccess(res, 200, 'Registrations fetched successfully', registrations);
+    return sendSuccess(
+      res,
+      200,
+      "Registrations fetched successfully",
+      registrations,
+    );
   } catch (error) {
     return sendError(res, 500, error.message);
   }
@@ -171,7 +225,7 @@ const cancelRegistration = async (req, res) => {
     if (!registration) return sendError(res, 404, "Registration not found");
 
     if (registration.user.toString() !== req.user._id.toString()) {
-      return sendError(res, 403, 'Not authorized to cancel this registration');
+      return sendError(res, 403, "Not authorized to cancel this registration");
     }
 
     if (registration.status === "checked-in") {
@@ -226,7 +280,21 @@ const cancelRegistration = async (req, res) => {
         await event.save();
 
         //Notify promoted user
-
+        await notify({
+          recipientIds: [nextInLine.user._id],
+          type: 'registration-confirmation',
+          title: `Registration Confirmed: ${event.title}`,
+          message: `You have been promoted from the waitlist and successfully registered for ${event.title}.`,
+          eventId: event._id,
+          event: event,
+          ticketId: nextInLine.ticketId,
+          attachments: [
+            {
+              filename: 'ticket-qr.png',
+              content: qrBuffer,
+            },
+          ],
+        });
         // Shift remaining waitlisted positions
         await Registration.updateMany(
           { event: event._id, status: "waitlisted" },
@@ -255,6 +323,10 @@ const cancelRegistration = async (req, res) => {
     return sendError(res, 500, error.message);
   }
 };
+
+// @desc    Get waitlist position for a registration
+// @route   GET /api/registrations/:id/waitlist-position
+// @access  Protected (User - owner only)
 const getWaitlistPosition = async (req, res) => {
   try {
     const registration = await Registration.findById(req.params.id);
@@ -276,6 +348,10 @@ const getWaitlistPosition = async (req, res) => {
   }
 };
 
+
+// @desc    Download ticket PDF
+// @route   GET /api/registrations/:id/pdf
+// @access  Protected (User - own registration)
 const getTicketPdf = async (req, res) => {
   try {
     const registration = await Registration.findById(req.params.id).populate(
@@ -302,32 +378,48 @@ const getTicketPdf = async (req, res) => {
     }
   }
 };
-/*
-const getTicketPdf = async (req, res) => {
+
+const exportRegistrationsCsv = async (req, res) => {
   try {
-    const registration = await Registration.findById(req.params.id)
-      .populate("event")
-      .populate("user");
+    const event = await Event.findById(req.params.eventId);
+    if (!event) return sendError(res, 404, "Event not found");
 
-    if (!registration) {
-      return sendError(res, 404, "Registration not found");
+    if (
+      event.organizer.toString() !== req.user._id.toString() &&
+      req.user.role !== "admin"
+    ) {
+      return sendError(res, 403, "Not authorized");
     }
 
-    if (!registration.qrImageUrl) {
-      return sendError(res, 400, "QR not generated");
-    }
+    const registrations = await Registration.find({
+      event: req.params.eventId,
+    }).populate("user", "name email phone");
 
-    await generateTicket({
-      registration,
-      user: registration.user,
-      res,
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=registrations-${event._id}.csv`,
+    );
+
+    let csv =
+      "Ticket ID,Name,Email,Phone,Status,Payment Status,Waitlist Position\\n";
+
+    registrations.forEach((reg) => {
+      const name = reg.user?.name?.replace(/,/g, "") || "";
+      const email = reg.user?.email || "";
+      const phone = reg.user?.phone || "";
+      const waitlistPos = reg.waitlistPosition || "";
+
+      csv += `${reg.ticketId},${name},${email},${phone},${reg.status},${reg.paymentStatus},${waitlistPos}\\n`;
     });
 
+    return res.status(200).send(csv);
   } catch (error) {
-    console.error(error);
-    return sendError(res, 500, error.message);
+    if (!res.headersSent) {
+      return sendError(res, 500, error.message);
+    }
   }
-};*/
+};
 
 module.exports = {
   createRegistration,
@@ -336,4 +428,5 @@ module.exports = {
   cancelRegistration,
   getTicketPdf,
   getWaitlistPosition,
+  exportRegistrationsCsv,
 };

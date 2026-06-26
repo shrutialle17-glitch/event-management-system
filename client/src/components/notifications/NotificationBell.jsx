@@ -1,53 +1,43 @@
-import React, { useState } from "react";
-import { Bell } from "lucide-react";
+import React, { useState, useRef, useEffect } from 'react';
+import { Bell } from 'lucide-react';
+import { useNotification } from '../../context/NotificationContext';
+import NotificationDropdown from './NotificationDropdown';
 
 const NotificationBell = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { unreadCount } = useNotification();
+  const dropdownRef = useRef(null);
 
-  // Dummy notifications
-  const notifications = [
-    "Welcome to Event Management!",
-    "Your event registration is confirmed.",
-    "New event added near you."
-  ];
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
-    <div className="relative">
-      {/* Bell Button */}
-      <button
+    <div className="relative" ref={dropdownRef}>
+      <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 rounded-full hover:bg-gray-100"
+        className="p-2 rounded-full hover:bg-gray-100 transition-colors relative focus:outline-none"
+        aria-label="Notifications"
       >
-        <Bell className="w-6 h-6 text-gray-700" />
-
-        {/* Notification Count */}
-        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-          {notifications.length}
-        </span>
+        <Bell className="w-6 h-6 text-textMuted hover:text-text transition-colors" />
+        {unreadCount > 0 && (
+          <span className="absolute top-1 right-1.5 flex h-4 w-4">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-4 w-4 bg-red-500 items-center justify-center text-[9px] font-bold text-white">
+              {unreadCount > 9 ? '9+' : unreadCount}
+            </span>
+          </span>
+        )}
       </button>
 
-      {/* Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-72 bg-white border rounded-lg shadow-lg z-50">
-          <div className="p-3 font-semibold border-b">
-            Notifications
-          </div>
-
-          {notifications.map((item, index) => (
-            <div
-              key={index}
-              className="p-3 border-b last:border-b-0 hover:bg-gray-50"
-            >
-              {item}
-            </div>
-          ))}
-
-          {notifications.length === 0 && (
-            <div className="p-4 text-center text-gray-500">
-              No notifications
-            </div>
-          )}
-        </div>
+        <NotificationDropdown onClose={() => setIsOpen(false)} />
       )}
     </div>
   );

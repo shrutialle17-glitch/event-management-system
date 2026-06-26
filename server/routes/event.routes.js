@@ -2,13 +2,15 @@ const express = require("express");
 const router = express.Router();
 const {
   createEvent,
-  getAllEvents,
+  getEvents,
   getEventById,
   cancelEvent,
   updateEvent,
   deleteEvent,
   getMyEvents,
+  getPublicStats,
   uploadEventBanner,
+  duplicateEvent,
 } = require("../controllers/event.controller");
 
 const upload = require("../middleware/upload.middleware");
@@ -29,8 +31,8 @@ const eventValidation = [
 
 
 // Public routes
-//router.get('/stats', getPublicStats);
-router.get('/', getAllEvents);
+router.get('/stats', getPublicStats);
+router.get('/', getEvents);
 router.get('/:id', getEventById);
 
 // Protected routes

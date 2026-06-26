@@ -1,10 +1,10 @@
 const User = require('../models/User');
-//const Badge = require('../models/Badge');
+const Badge = require('../models/Badge');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const generateToken = require('../utils/generateToken');
 const { sendSuccess, sendError } = require('../utils/apiResponse');
-//const sendEmail = require('../utils/sendEmail');
+const sendEmail = require('../utils/sendEmail');
 const { passwordResetTemplate } = require('../utils/emailTemplates');
 
 const registerUser = async (req, res) => {
@@ -108,11 +108,11 @@ const forgotPassword = async (req, res) => {
 
     const resetUrl = `${process.env.CLIENT_URL || 'http://localhost:5173'}/reset-password/${resetToken}`;
 
-    /*await sendEmail({
+    await sendEmail({
       email: user.email,
       subject: 'Password Reset Request',
       html: passwordResetTemplate(user, resetUrl),
-    });*/
+    });
 
     return sendSuccess(res, 200, 'Password reset token generated', {
     resetToken,
@@ -170,7 +170,7 @@ const updateProfile = async (req, res) => {
   }
 };
 
-/*const updateNotificationPreferences = async (req, res) => {
+const updateNotificationPreferences = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user) return sendError(res, 404, 'User not found');
@@ -200,7 +200,7 @@ const getBadges = async (req, res) => {
   } catch (error) {
     return sendError(res, 500, error.message);
   }
-};*/
+};
 
 module.exports = {
   registerUser,
@@ -210,6 +210,6 @@ module.exports = {
   forgotPassword,
   resetPassword,
   updateProfile,
-  //updateNotificationPreferences,
-  //getBadges,
+  updateNotificationPreferences,
+  getBadges,
 };

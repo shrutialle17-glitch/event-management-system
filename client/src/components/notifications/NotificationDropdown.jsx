@@ -1,4 +1,4 @@
-/*import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getNotifications, markAsRead, markAllAsRead } from '../../api/notificationApi';
 import { useNotification } from '../../context/NotificationContext';
 import { useNavigate } from 'react-router-dom';
@@ -144,4 +144,3 @@ const NotificationDropdown = ({ onClose }) => {
 };
 
 export default NotificationDropdown;
-*/

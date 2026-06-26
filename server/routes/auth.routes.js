@@ -9,8 +9,8 @@ const {
   forgotPassword,
   resetPassword,
   updateProfile,
-  //updateNotificationPreferences,
-  //getBadges
+  updateNotificationPreferences,
+  getBadges
 } = require('../controllers/auth.controller');
 const { verifyToken } = require('../middleware/auth.middleware');
 const { validate } = require('../middleware/validate.middleware');
@@ -36,7 +36,7 @@ router.post('/reset-password/:token', resetPassword);
 router.post('/logout', verifyToken, logoutUser);
 router.get('/me', verifyToken, getMe);
 router.put('/profile', verifyToken, updateProfile);
-//router.patch('/notification-preferences', verifyToken, updateNotificationPreferences);
-//router.get('/badges', verifyToken, getBadges);
+router.patch('/notification-preferences', verifyToken, updateNotificationPreferences);
+router.get('/badges', verifyToken, getBadges);
 
 module.exports = router;

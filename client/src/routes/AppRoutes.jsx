@@ -1,34 +1,36 @@
-import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-
-import ProtectedRoute from "./ProtectedRoute";
-import DashboardLayout from "../components/layout/DashboardLayout";
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import ProtectedRoute from './ProtectedRoute';
+import DashboardLayout from '../components/layout/DashboardLayout';
 import { useAuth } from '../context/AuthContext';
 
-import OrganizerDashboard from "../pages/organizer/OrganizerDashboard";
-import CreateEvent from "../pages/organizer/CreateEvent";
-import EditEvent from "../pages/organizer/EditEvent";
-import EventAnalytics from "../pages/organizer/EventAnalytics";
-import QRScanner from "../pages/organizer/QRScanner";
-
-
-import BrowseEvents from "../pages/public/BrowseEvents";
-import EventDetails from "../pages/public/EventDetails";
 import Home from '../pages/public/Home';
+import BrowseEvents from '../pages/public/BrowseEvents';
+import EventDetails from '../pages/public/EventDetails';
 import Login from '../pages/public/Login';
 import Register from '../pages/public/Register';
 import ForgotPassword from '../pages/public/ForgotPassword';
 import ResetPassword from '../pages/public/ResetPassword';
 
 import UserDashboard from '../pages/user/UserDashboard';
+import MyTickets from '../pages/user/MyTickets';
 import ProfileSettings from '../pages/user/ProfileSettings';
-import MyTickets from "../pages/user/MyTickets";
 
+import OrganizerDashboard from '../pages/organizer/OrganizerDashboard';
+import CreateEvent from '../pages/organizer/CreateEvent';
+import EditEvent from '../pages/organizer/EditEvent';
+import ManageRegistrations from '../pages/organizer/ManageRegistrations';
+import QRScanner from '../pages/organizer/QRScanner';
+import EventAnalytics from '../pages/organizer/EventAnalytics';
+import EventFeedbackGallery from '../pages/organizer/EventFeedbackGallery';
 
-const NotFound = () => (
-  <div className="p-8 text-center text-2xl font-bold">404 - Page Not Found</div>
-);
+import AdminDashboard from '../pages/admin/AdminDashboard';
+import PendingEvents from '../pages/admin/PendingEvents';
+import ManageUsers from '../pages/admin/ManageUsers';
+import ManageEvents from '../pages/admin/ManageEvents';
+import Reports from '../pages/admin/Reports';
 
+const NotFound = () => <div className="p-8 text-center text-2xl font-bold text-red-500">404 - Not Found</div>;
 
 const AppRoutes = () => {
   const { user } = useAuth();
@@ -69,13 +71,19 @@ const AppRoutes = () => {
         <Route path="/organizer" element={<ProtectedRoute allowedRoles={['organizer', 'admin']}><OrganizerDashboard /></ProtectedRoute>} />
         <Route path="/organizer/events/new" element={<ProtectedRoute allowedRoles={['organizer', 'admin']}><CreateEvent /></ProtectedRoute>} />
         <Route path="/organizer/events/:id/edit" element={<ProtectedRoute allowedRoles={['organizer', 'admin']}><EditEvent /></ProtectedRoute>} />
-        
-        
-
+        <Route path="/organizer/events/:id/registrations" element={<ProtectedRoute allowedRoles={['organizer', 'admin']}><ManageRegistrations /></ProtectedRoute>} />
+        <Route path="/organizer/events/:id/analytics" element={<ProtectedRoute allowedRoles={['organizer', 'admin']}><EventAnalytics /></ProtectedRoute>} />
         <Route path="/organizer/scan" element={<ProtectedRoute allowedRoles={['organizer', 'admin']}><QRScanner /></ProtectedRoute>} />
-  
+        <Route path="/organizer/events/:id/feedback" element={<ProtectedRoute allowedRoles={['organizer', 'admin']}><EventFeedbackGallery /></ProtectedRoute>} />
 
+        {/* Admin Protected Routes */}
+        <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
+        <Route path="/admin/events/pending" element={<ProtectedRoute allowedRoles={['admin']}><PendingEvents /></ProtectedRoute>} />
+        <Route path="/admin/users" element={<ProtectedRoute allowedRoles={['admin']}><ManageUsers /></ProtectedRoute>} />
+        <Route path="/admin/events" element={<ProtectedRoute allowedRoles={['admin']}><ManageEvents /></ProtectedRoute>} />
+        <Route path="/admin/reports" element={<ProtectedRoute allowedRoles={['admin']}><Reports /></ProtectedRoute>} />
       </Route>
+
       {/* Fallback */}
       <Route path="*" element={<NotFound />} />
     </Routes>

@@ -2,6 +2,7 @@ import React from 'react';
 import { AuthProvider } from './context/AuthContext';
 import AppRoutes from './routes/AppRoutes';
 import { Toaster } from 'react-hot-toast';
+import { NotificationProvider } from './context/NotificationContext';
 
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
@@ -9,6 +10,7 @@ import Footer from './components/layout/Footer';
 function App() {
   return (
     <AuthProvider>
+      <NotificationProvider>
           <div className="min-h-screen bg-background text-text flex flex-col font-sans">
             <Navbar />
             <main className="flex-grow flex flex-col">
@@ -40,6 +42,7 @@ function App() {
               },
             }}
           />
+        </NotificationProvider>
     </AuthProvider>
   );
 }

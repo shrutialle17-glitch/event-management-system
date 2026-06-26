@@ -12,7 +12,7 @@ const feedbackSchema = z.object({
   comment: z.string().max(1000, 'Comment is too long').optional(),
 });
 
-const FeedbackForm = ({ eventId, onFeedbackSubmitted }) => {
+const FeedbackForm = ({ eventId, onFeedbackSubmitted, onSuccess }) => {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
 
@@ -30,6 +30,11 @@ const FeedbackForm = ({ eventId, onFeedbackSubmitted }) => {
     try {
       const res = await axiosInstance.post('/feedback', { eventId, rating: data.rating, comment: data.comment });
       toast.success('Feedback submitted successfully!');
+
+      if (onSuccess) {
+        onSuccess();
+      } 
+
       if (onFeedbackSubmitted) onFeedbackSubmitted(res.data.data);
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to submit feedback');

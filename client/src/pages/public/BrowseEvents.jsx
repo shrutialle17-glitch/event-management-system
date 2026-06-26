@@ -25,11 +25,8 @@ const BrowseEvents = () => {
         if (categoryParam) url += `category=${categoryParam}&`;
         if (searchParam)   url += `search=${searchParam}&`;
         if (timeParam)     url += `time=${timeParam}&`;
-        //const res = await axiosInstance.get(url);
-        //setEvents(res.data.data.events);
         const res = await axiosInstance.get(url);
-        console.log("Events API Response:", res.data);
-        setEvents(Array.isArray(res.data.data) ? res.data.data : []);
+        setEvents(res.data.data.events);
       } catch (err) {
         console.error('Failed to fetch events', err);
       } finally {
@@ -63,12 +60,6 @@ const BrowseEvents = () => {
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Page Header */}
-      <div className="bg-white border-b border-slate-100" style={{boxShadow:'0 1px 0 rgba(15,23,42,0.06)'}}>
-        <div className="container mx-auto px-4 py-10">
-          <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight mb-1">Browse Events</h1>
-          <p className="text-textMuted">Find your next great experience</p>
-        </div>
-      </div>
 
       <div className="container mx-auto px-4 py-8">
         {/* Search & Filter Bar */}

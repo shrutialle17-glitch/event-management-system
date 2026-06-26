@@ -1,7 +1,7 @@
 const Feedback = require("../models/Feedback");
 const Event = require("../models/Event");
 const Registration = require('../models/Registration');
-//const { checkAndAwardBadges } = require('../utils/checkAndAwardBadges');
+const { checkAndAwardBadges } = require('../utils/checkAndAwardBadges');
 const { sendSuccess, sendError } = require("../utils/apiResponse");
 const mongoose = require("mongoose");
 
@@ -46,7 +46,7 @@ const createFeedback = async (req, res) => {
       throw err;
     }
 
-    //await checkAndAwardBadges(userId, 'feedback-giver');
+    await checkAndAwardBadges(userId, 'feedback-giver');
 
     return sendSuccess(res, 201, "Feedback submitted successfully", feedback);
   } catch (error) {

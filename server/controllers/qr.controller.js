@@ -3,8 +3,8 @@ const jwt = require('jsonwebtoken');
 const Registration = require("../models/Registration");
 const Attendance = require("../models/Attendance");
 const Event = require("../models/Event");
-//const notify = require('../utils/notify');
-//const { checkAndAwardBadges } = require('../utils/checkAndAwardBadges');
+const notify = require('../utils/notify');
+const { checkAndAwardBadges } = require('../utils/checkAndAwardBadges');
 const { sendSuccess, sendError } = require("../utils/apiResponse");
 
 // @desc    Get QR Image URL for a registration
@@ -18,7 +18,7 @@ const getQR = async (req, res) => {
       return sendError(res, 404, "Registration not found");
     }
 
-    A//ccess control: only the user who registered, or an organizer/admin can view it
+    //Access control: only the user who registered, or an organizer/admin can view it
     if (
       registration.user.toString() !== req.user._id.toString() &&
       req.user.role === 'user'
@@ -147,7 +147,7 @@ const checkInQR = async (req, res) => {
     registration.status = 'checked-in';
     await registration.save();
 
-    /*Send Check-in Confirmation notification
+    //Send Check-in Confirmation notification
     await notify({
       recipientIds: [registration.user._id],
       type: 'attendance-confirmed',
@@ -160,7 +160,7 @@ const checkInQR = async (req, res) => {
     // Badge checks
     const attendanceCount = await Attendance.countDocuments({ user: registration.user._id });
     if (attendanceCount === 1) await checkAndAwardBadges(registration.user._id, 'first-event');
-    if (attendanceCount === 5) await checkAndAwardBadges(registration.user._id, 'five-events');*/
+    if (attendanceCount === 5) await checkAndAwardBadges(registration.user._id, 'five-events');
 
     return sendSuccess(res, 200, 'Check-in successful', attendance);
 
@@ -212,10 +212,10 @@ const manualCheckIn = async (req, res) => {
       event: registration.event,
     });
 
-    /*Badge checks
+    //Badge checks
     const attendanceCount = await Attendance.countDocuments({ user: registration.user._id });
     if (attendanceCount === 1) await checkAndAwardBadges(registration.user._id, 'first-event');
-    if (attendanceCount === 5) await checkAndAwardBadges(registration.user._id, 'five-events');*/
+    if (attendanceCount === 5) await checkAndAwardBadges(registration.user._id, 'five-events');
 
     return sendSuccess(res, 200, 'Manual check-in successful', attendance);
   } catch (error) {

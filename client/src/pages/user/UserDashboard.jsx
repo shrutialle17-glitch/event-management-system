@@ -56,7 +56,6 @@ const UserDashboard = () => {
               </div>
             )}
             <div>
-              <p className="text-sm font-semibold mb-0.5" style={{ color: '#5eead4' }}>Good day 👋</p>
               <h1 className="text-3xl font-extrabold tracking-tight text-white">Welcome back, {user.name?.split(' ')[0]}!</h1>
               <p className="text-sm mt-0.5" style={{ color: 'rgba(255,255,255,0.55)' }}>Here's an overview of your event activity.</p>
             </div>
