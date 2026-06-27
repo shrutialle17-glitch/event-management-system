@@ -44,28 +44,25 @@ const Navbar = () => {
         className="sticky top-0 z-50 w-full transition-all duration-300"
         style={{
           background: scrolled ? 'rgba(255,255,255,0.96)' : 'rgba(255,255,255,0.92)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
-          borderBottom: scrolled ? '1px solid rgba(15,23,42,0.08)' : '1px solid rgba(15,23,42,0.05)',
-          boxShadow: scrolled ? '0 2px 20px rgba(15,23,42,0.08)' : 'none',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          borderBottom: scrolled ? '1px solid rgba(15,23,42,0.06)' : '1px solid rgba(15,23,42,0.03)',
+          boxShadow: scrolled ? '0 2px 20px rgba(15,23,42,0.05)' : 'none',
         }}
       >
         <div className="container mx-auto flex items-center justify-between px-4 h-16">
           {/* ── Logo ── */}
-          <Link to="/" className="flex items-center gap-2.5 group flex-shrink-0">
-            <div
-              className="p-2 rounded-xl flex-shrink-0"
-              style={{ background: 'linear-gradient(135deg, #10b981 0%, #06b6d4 100%)', boxShadow: '0 4px 12px rgba(16,185,129,0.3)' }}
-            >
+          <Link to="/" className="flex items-center gap-2 group flex-shrink-0">
+            <div className="p-2 bg-primary rounded-xl flex-shrink-0 shadow-button group-hover:-translate-y-0.5 transition-transform duration-250">
               <Calendar className="w-5 h-5 text-white" />
             </div>
-            <span className="text-lg font-bold text-slate-900 tracking-tight">
-              Event<span style={{ color: '#10b981' }}>io</span>
+            <span className="text-xl font-bold text-slate-900 tracking-tight">
+              Event<span className="text-primary">io</span>
             </span>
           </Link>
 
           {/* ── Desktop Nav Links ── */}
-          <div className="hidden md:flex items-center gap-7">
+          <div className="hidden md:flex items-center gap-8">
             <Link to="/" className={navLinkClass('/')}>Home</Link>
             <Link to="/events" className={navLinkClass('/events')}>Browse Events</Link>
             {user && (
@@ -82,7 +79,7 @@ const Navbar = () => {
                 <NotificationBell />
                 <Link
                   to={getDashboardLink()}
-                  className="flex items-center gap-2.5 hover:bg-slate-100 px-2.5 py-1.5 rounded-xl transition-all duration-200"
+                  className="flex items-center gap-2 hover:bg-slate-50 px-2 py-1.5 rounded-xl transition-all duration-200 border border-transparent hover:border-slate-100"
                 >
                   {user.avatarUrl ? (
                     <img
@@ -91,10 +88,7 @@ const Navbar = () => {
                       className="w-8 h-8 rounded-full object-cover ring-2 ring-white shadow-sm"
                     />
                   ) : (
-                    <div
-                      className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0"
-                      style={{ background: 'linear-gradient(135deg, #10b981 0%, #06b6d4 100%)' }}
-                    >
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0 bg-primary">
                       {user.name?.charAt(0).toUpperCase()}
                     </div>
                   )}
@@ -105,28 +99,18 @@ const Navbar = () => {
                 <button
                   onClick={handleLogout}
                   title="Log out"
-                  className="p-2 rounded-xl text-slate-400 hover:text-red-500 hover:bg-red-50 transition-all duration-200"
+                  className="p-2 rounded-xl text-slate-400 hover:text-error hover:bg-error/10 transition-all duration-200"
                 >
-                  <LogOut className="w-4 h-4" />
+                  <LogOut className="w-4.5 h-4.5" />
                 </button>
               </>
             ) : (
               <>
                 <Link to="/login" className="hidden sm:block">
-                  <button className="px-4 py-2 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all duration-200">
-                    Log in
-                  </button>
+                  <Button variant="ghost" className="!px-4">Log in</Button>
                 </Link>
                 <Link to="/register">
-                  <button
-                    className="px-4 py-2 text-sm font-semibold text-white rounded-xl transition-all duration-200 hover:-translate-y-px"
-                    style={{
-                      background: 'linear-gradient(135deg, #10b981 0%, #06b6d4 100%)',
-                      boxShadow: '0 4px 12px rgba(16,185,129,0.35)',
-                    }}
-                  >
-                    Get Started
-                  </button>
+                  <Button variant="primary" className="!px-5">Get Started</Button>
                 </Link>
               </>
             )}

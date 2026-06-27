@@ -152,7 +152,7 @@ const Home = () => {
           {loading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[1,2,3].map(i => (
-                <div key={i} className="rounded-2xl overflow-hidden border border-slate-100" style={{boxShadow:'0 4px 24px rgba(15,23,42,0.06)'}}>
+                <div key={i} className="rounded-2xl overflow-hidden border border-slate-100 shadow-soft">
                   <div className="h-48 shimmer" />
                   <div className="p-5 space-y-3">
                     <div className="h-5 shimmer w-3/4" />

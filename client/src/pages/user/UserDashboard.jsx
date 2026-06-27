@@ -84,14 +84,14 @@ const UserDashboard = () => {
         </div>
 
         {/* Quick actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <Link to="/events" className="group flex items-center gap-4 bg-white rounded-2xl p-5 border border-slate-100 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200">
             <div className="w-12 h-12 bg-gradient-primary rounded-2xl flex items-center justify-center text-white shadow-button flex-shrink-0">
               <TrendingUp className="w-6 h-6" />
             </div>
             <div className="flex-grow">
               <p className="font-bold text-slate-900">Browse Events</p>
-              <p className="text-sm text-textMuted">Find something new to attend</p>
+              <p className="text-sm text-textMuted">Find something new</p>
             </div>
             <ArrowUpRight className="w-5 h-5 text-slate-300 group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200" />
           </Link>
@@ -101,7 +101,17 @@ const UserDashboard = () => {
             </div>
             <div className="flex-grow">
               <p className="font-bold text-slate-900">My Tickets</p>
-              <p className="text-sm text-textMuted">View all your registered events</p>
+              <p className="text-sm text-textMuted">View your registrations</p>
+            </div>
+            <ArrowUpRight className="w-5 h-5 text-slate-300 group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200" />
+          </Link>
+          <Link to="/dashboard/settings" className="group flex items-center gap-4 bg-white rounded-2xl p-5 border border-slate-100 shadow-card hover:shadow-card-hover hover:-translate-y-0.5 transition-all duration-200">
+            <div className="w-12 h-12 bg-slate-100 text-slate-600 rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-settings"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+            </div>
+            <div className="flex-grow">
+              <p className="font-bold text-slate-900">Profile Settings</p>
+              <p className="text-sm text-textMuted">Manage preferences</p>
             </div>
             <ArrowUpRight className="w-5 h-5 text-slate-300 group-hover:text-primary group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-200" />
           </Link>

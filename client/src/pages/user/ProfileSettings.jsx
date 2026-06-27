@@ -104,27 +104,27 @@ const ProfileSettings = () => {
         <div className="md:col-span-2 space-y-8">
           
           {/* Profile Form */}
-          <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-            <h2 className="text-xl font-bold text-text mb-6">Personal Information</h2>
+          <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-soft">
+            <h2 className="text-xl font-bold text-slate-900 mb-6">Personal Information</h2>
             <form onSubmit={handleProfileSubmit} className="space-y-5">
               <div className="flex items-center gap-6 mb-6">
                 <div className="relative">
                   {avatarUrl ? (
-                    <img src={avatarUrl} alt="Avatar" className="w-24 h-24 rounded-full object-cover border-4 border-gray-50" />
+                    <img src={avatarUrl} alt="Avatar" className="w-24 h-24 rounded-full object-cover border-4 border-slate-50" />
                   ) : (
-                    <div className="w-24 h-24 rounded-full bg-primary/10 text-primary flex items-center justify-center text-3xl font-bold">
+                    <div className="w-24 h-24 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-3xl font-bold ring-4 ring-white shadow-sm">
                       {name.charAt(0)}
                     </div>
                   )}
                   {/* Avatar Upload (Mocked for now) */}
-                  <label className="absolute bottom-0 right-0 p-1.5 bg-white rounded-full shadow-md border border-gray-100 cursor-pointer text-gray-600 hover:text-primary transition-colors">
+                  <label className="absolute bottom-0 right-0 p-1.5 bg-white rounded-full shadow-md border border-slate-100 cursor-pointer text-slate-500 hover:text-primary transition-colors hover:-translate-y-0.5">
                     <Camera className="w-4 h-4" />
                     <input type="file" className="hidden" accept="image/*" onChange={handleAvatarUpload} />
                   </label>
                 </div>
                 <div>
                   <p className="text-sm font-medium text-textMuted">Email Address</p>
-                  <p className="text-text font-bold">{user.email}</p>
+                  <p className="text-slate-900 font-bold">{user.email}</p>
                 </div>
               </div>
 
@@ -149,47 +149,47 @@ const ProfileSettings = () => {
                 placeholder="https://..."
               />
               
-              <div className="flex justify-end pt-4 border-t border-gray-100">
+              <div className="flex justify-end pt-4 border-t border-slate-100">
                 <Button type="submit" isLoading={loading}>Save Changes</Button>
               </div>
             </form>
           </div>
 
           {/* Preferences */}
-          <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-            <h2 className="text-xl font-bold text-text mb-6">Notification Preferences</h2>
+          <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-soft">
+            <h2 className="text-xl font-bold text-slate-900 mb-6">Notification Preferences</h2>
             <div className="space-y-4">
-              <div className="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors">
+              <div className="flex items-center justify-between p-4 border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors">
                 <div>
-                  <p className="font-bold text-text">Event Reminders (Email)</p>
+                  <p className="font-bold text-slate-900">Event Reminders (Email)</p>
                   <p className="text-sm text-textMuted">Receive 24-hour and 1-hour reminders before your events.</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" name="emailReminders" className="sr-only peer" checked={prefs.emailReminders} onChange={handlePrefsChange} />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                  <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                 </label>
               </div>
 
-              <div className="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors">
+              <div className="flex items-center justify-between p-4 border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors">
                 <div>
-                  <p className="font-bold text-text">Event Updates (Email)</p>
+                  <p className="font-bold text-slate-900">Event Updates (Email)</p>
                   <p className="text-sm text-textMuted">Get notified when an event you're attending is updated or cancelled.</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" name="emailUpdates" className="sr-only peer" checked={prefs.emailUpdates} onChange={handlePrefsChange} />
-                  <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                  <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                 </label>
               </div>
 
               {user.role !== 'user' && (
-                <div className="flex items-center justify-between p-4 border border-gray-100 rounded-xl hover:bg-gray-50 transition-colors">
+                <div className="flex items-center justify-between p-4 border border-slate-100 rounded-xl hover:bg-slate-50 transition-colors">
                   <div>
-                    <p className="font-bold text-text">New Registrations (Email)</p>
+                    <p className="font-bold text-slate-900">New Registrations (Email)</p>
                     <p className="text-sm text-textMuted">Receive an email every time someone registers for your event.</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" name="emailNewRegistrations" className="sr-only peer" checked={prefs.emailNewRegistrations} onChange={handlePrefsChange} />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                    <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
                   </label>
                 </div>
               )}
@@ -197,20 +197,20 @@ const ProfileSettings = () => {
           </div>
 
           {/* Badges Section */}
-          <div className="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm">
-            <h2 className="text-xl font-bold text-text mb-6">Your Badges</h2>
+          <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-soft">
+            <h2 className="text-xl font-bold text-slate-900 mb-6">Your Badges</h2>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {badges.map(badge => {
                 const isEarned = earnedBadgeKeys.includes(badge.key);
                 return (
                   <div 
                     key={badge.key} 
-                    className={`flex flex-col items-center justify-center p-4 rounded-xl border border-gray-100 transition-all ${
-                      isEarned ? 'bg-primary/5 shadow-sm scale-100' : 'bg-gray-50 opacity-50 grayscale'
+                    className={`flex flex-col items-center justify-center p-4 rounded-xl border border-slate-100 transition-all ${
+                      isEarned ? 'bg-primary/5 shadow-sm scale-100' : 'bg-slate-50 opacity-50 grayscale'
                     }`}
                   >
                     <div className="text-4xl mb-3">{badge.icon}</div>
-                    <p className="font-bold text-sm text-center text-text mb-1 leading-tight">{badge.label}</p>
+                    <p className="font-bold text-sm text-center text-slate-900 mb-1 leading-tight">{badge.label}</p>
                     <p className="text-xs text-center text-textMuted leading-snug">{badge.description}</p>
                   </div>
                 );

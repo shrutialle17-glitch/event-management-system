@@ -74,13 +74,13 @@ const Login = () => {
         <div className="w-full max-w-md">
           {/* Mobile logo */}
           <div className="flex items-center gap-2 mb-8 lg:hidden">
-            <div className="bg-gradient-primary p-2 rounded-xl">
+            <div className="bg-primary p-2 rounded-xl">
               <Calendar className="w-5 h-5 text-white" />
             </div>
             <span className="text-xl font-bold text-slate-900">Event<span className="text-primary">io</span></span>
           </div>
 
-          <div className="bg-white rounded-3xl p-8 shadow-card border border-slate-100">
+          <div className="bg-white rounded-3xl p-8 shadow-soft border border-slate-100">
             <div className="mb-8">
               <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-2">Welcome back</h1>
               <p className="text-textMuted">Sign in to manage your events and tickets</p>

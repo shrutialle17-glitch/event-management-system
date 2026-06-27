@@ -3,17 +3,16 @@
 @tailwind utilities;
 
 /* ============================
-   PREMIUM DESIGN SYSTEM
+   PREMIUM SAAS DESIGN SYSTEM
    ============================ */
 
 @layer base {
   :root {
     --gradient-primary: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
-    --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f3460 100%);
-    --shadow-glow: 0 0 40px rgba(16, 185, 129, 0.15);
-    --shadow-card: 0 4px 24px rgba(15, 23, 42, 0.08), 0 1px 4px rgba(15, 23, 42, 0.04);
-    --shadow-card-hover: 0 12px 40px rgba(15, 23, 42, 0.12), 0 4px 12px rgba(15, 23, 42, 0.06);
-    --border-subtle: rgba(15, 23, 42, 0.08);
+    --shadow-glow: 0 0 30px rgba(16, 185, 129, 0.1);
+    --shadow-card: 0 4px 20px rgba(15, 23, 42, 0.05);
+    --shadow-card-hover: 0 10px 40px rgba(15, 23, 42, 0.08);
+    --border-subtle: rgba(15, 23, 42, 0.06);
   }
 
   * {
@@ -22,7 +21,7 @@
 
   body {
     @apply bg-background text-text antialiased;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Inter', 'Manrope', system-ui, -apple-system, sans-serif;
     font-feature-settings: 'cv11', 'ss01';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -30,7 +29,7 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-feature-settings: 'cv11', 'ss01';
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
   }
 
   ::selection {
@@ -41,9 +40,10 @@
   /* Smooth scrollbar */
   ::-webkit-scrollbar {
     width: 6px;
+    height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #f1f5f9;
+    background: transparent;
   }
   ::-webkit-scrollbar-thumb {
     background: #cbd5e1;
@@ -58,17 +58,17 @@
   /* ---- GLASS CARDS ---- */
   .glass-card {
     background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.6);
     box-shadow: var(--shadow-card);
   }
 
   .glass-card-dark {
     background: rgba(15, 23, 42, 0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   /* ---- PREMIUM CARDS ---- */
@@ -76,11 +76,12 @@
     @apply bg-white rounded-2xl;
     box-shadow: var(--shadow-card);
     border: 1px solid var(--border-subtle);
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
   }
 
   .premium-card:hover {
     box-shadow: var(--shadow-card-hover);
+    transform: translateY(-2px);
   }
 
   /* ---- GRADIENT TEXT ---- */
@@ -92,13 +93,13 @@
   /* ---- GRADIENT BUTTON ---- */
   .btn-gradient {
     background: var(--gradient-primary);
-    @apply text-white font-semibold;
-    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
-    transition: all 0.3s ease;
+    @apply text-white font-medium rounded-xl;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+    transition: all 0.25s ease;
   }
 
   .btn-gradient:hover {
-    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
     transform: translateY(-1px);
   }
 
@@ -107,7 +108,7 @@
     @apply bg-white rounded-2xl p-6 flex items-center gap-4;
     box-shadow: var(--shadow-card);
     border: 1px solid var(--border-subtle);
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
   }
 
   .stat-card:hover {
@@ -362,31 +363,4 @@
   font-size: 0.8rem !important;
   color: #64748b !important;
   font-family: 'Inter', sans-serif !important;
-}
-
-@layer base {
-  body {
-    @apply bg-background text-text font-sans antialiased;
-  }
-}
-
-@layer utilities {
-  .glass-card {
-    @apply bg-white/80 backdrop-blur-md border border-white/50 shadow-xl;
-  }
-}
-
-/* Fix for html5-qrcode library links in Tailwind */
-#qr-reader a {
-  cursor: pointer !important;
-  color: theme('colors.primary.DEFAULT') !important;
-  text-decoration: underline !important;
-  font-weight: 500 !important;
-  margin: 10px 0 !important;
-  display: inline-block !important;
-}
-#qr-reader button {
-  @apply bg-gray-100 hover:bg-gray-200 text-gray-800 font-semibold py-2 px-4 border border-gray-300 rounded shadow-sm transition-colors;
-  margin: 10px 5px !important;
-  cursor: pointer !important;
 }

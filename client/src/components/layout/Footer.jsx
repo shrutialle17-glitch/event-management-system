@@ -17,7 +17,7 @@ const Footer = () => {
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
             <Link to="/" className="flex items-center gap-2.5 mb-5 group w-fit">
-              <div className="bg-gradient-primary p-2 rounded-xl shadow-button group-hover:shadow-button-hover transition-all">
+              <div className="bg-primary p-2 rounded-xl shadow-button group-hover:shadow-button-hover group-hover:-translate-y-0.5 transition-all duration-250">
                 <Calendar className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-bold tracking-tight">

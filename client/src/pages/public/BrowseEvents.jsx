@@ -106,7 +106,7 @@ const BrowseEvents = () => {
         </div>
 
         {/* Time Tabs */}
-        <div className="flex bg-white rounded-2xl p-1.5 border border-slate-100 shadow-sm mb-6 w-fit">
+        <div className="flex bg-white rounded-2xl p-1.5 border border-slate-100 shadow-soft mb-6 w-fit">
           {[
             { key: '',         label: 'All Events' },
             { key: 'upcoming', label: '🗓 Upcoming' },
@@ -118,7 +118,7 @@ const BrowseEvents = () => {
               className="px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200"
               style={
                 timeParam === tab.key
-                  ? { background: 'linear-gradient(135deg,#10b981,#06b6d4)', color: 'white', boxShadow: '0 4px 12px rgba(16,185,129,0.3)' }
+                  ? { background: 'var(--color-primary, #10b981)', color: 'white', boxShadow: '0 4px 12px rgba(16,185,129,0.25)' }
                   : { color: '#64748b' }
               }
             >
@@ -131,7 +131,7 @@ const BrowseEvents = () => {
         <div className="flex gap-2 overflow-x-auto pb-2 mb-6 scrollbar-hide">
           <button
             onClick={() => setCategory('')}
-            className={`flex-shrink-0 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide transition-all duration-200 ${!categoryParam ? 'bg-slate-900 text-white shadow-sm' : 'bg-white border border-slate-200 text-slate-500 hover:border-slate-300'}`}
+            className={`flex-shrink-0 px-4 py-2 rounded-full text-[13px] font-bold uppercase tracking-wide transition-all duration-200 ${!categoryParam ? 'bg-slate-900 text-white shadow-sm' : 'bg-white border border-slate-200 text-slate-500 hover:border-slate-300'}`}
           >
             All
           </button>
@@ -139,7 +139,7 @@ const BrowseEvents = () => {
             <button
               key={cat}
               onClick={() => setCategory(cat === categoryParam ? '' : cat)}
-              className={`flex-shrink-0 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wide transition-all duration-200 ${categoryParam === cat ? 'bg-primary text-white shadow-button' : 'bg-white border border-slate-200 text-slate-500 hover:border-primary/30 hover:text-primary'}`}
+              className={`flex-shrink-0 px-4 py-2 rounded-full text-[13px] font-bold uppercase tracking-wide transition-all duration-200 ${categoryParam === cat ? 'bg-primary text-white shadow-button' : 'bg-white border border-slate-200 text-slate-500 hover:border-primary/30 hover:text-primary'}`}
             >
               {CATEGORY_EMOJI[cat]} {cat}
             </button>
@@ -150,11 +150,11 @@ const BrowseEvents = () => {
         {!loading && (
           <div className="flex items-center justify-between mb-6">
             <p className="text-sm text-textMuted font-medium">
-              <span className="font-bold text-slate-900">{events?.length || 0}</span> events found
-              {activeFiltersCount > 0 && <span className="ml-2 px-2 py-0.5 bg-primary/10 text-primary text-xs font-bold rounded-full">{activeFiltersCount} filter{activeFiltersCount > 1 ? 's' : ''} active</span>}
+              <span className="font-bold text-slate-900">{events.length}</span> events found
+              {activeFiltersCount > 0 && <span className="ml-2 px-2.5 py-0.5 bg-primary/10 text-primary text-[11px] font-bold uppercase tracking-wider rounded-full">{activeFiltersCount} filter{activeFiltersCount > 1 ? 's' : ''} active</span>}
             </p>
             {activeFiltersCount > 0 && (
-              <button onClick={() => setSearchParams({})} className="text-xs text-slate-500 hover:text-red-500 font-medium transition-colors">
+              <button onClick={() => setSearchParams({})} className="text-sm text-slate-500 hover:text-error font-medium transition-colors">
                 Clear all filters
               </button>
             )}
@@ -165,7 +165,7 @@ const BrowseEvents = () => {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[1,2,3,4,5,6].map(i => (
-              <div key={i} className="rounded-2xl overflow-hidden bg-white border border-slate-100" style={{boxShadow:'0 4px 24px rgba(15,23,42,0.06)'}}>
+              <div key={i} className="rounded-2xl overflow-hidden bg-white border border-slate-100 shadow-soft">
                 <div className="h-48 shimmer" />
                 <div className="p-5 space-y-3">
                   <div className="h-5 shimmer w-3/4" />
