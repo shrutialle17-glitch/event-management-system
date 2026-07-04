@@ -57,7 +57,7 @@ const EventAnalytics = () => {
   }));
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <div className="container mx-auto px-4 py-8 max-w-8xl">
       <Link to="/organizer" className="flex items-center text-textMuted hover:text-primary mb-6 transition-colors w-fit">
         <ArrowLeft className="w-4 h-4 mr-2" /> Back to Dashboard
       </Link>

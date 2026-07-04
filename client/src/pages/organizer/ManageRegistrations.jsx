@@ -96,7 +96,7 @@ const ManageRegistrations = () => {
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
       <div className="bg-white border-b border-slate-100" style={{boxShadow:'0 1px 0 rgba(15,23,42,0.06)'}}>
-        <div className="container mx-auto px-4 py-6 max-w-7xl">
+        <div className="container mx-auto px-4 py-6 max-w-8xl">
           <Link to="/organizer" className="inline-flex items-center gap-1.5 text-sm text-textMuted hover:text-primary font-medium transition-colors mb-4 group">
             <ArrowLeft className="w-4 h-4 group-hover:-translate-x-0.5 transition-transform" /> Back to Dashboard
           </Link>
@@ -116,7 +116,7 @@ const ManageRegistrations = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+      <div className="container mx-auto px-4 py-8 max-w-8xl">
         {/* Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {[

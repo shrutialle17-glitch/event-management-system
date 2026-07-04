@@ -35,14 +35,12 @@ const AdminDashboard = () => {
   }));
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl">
-      <div className="flex items-center gap-3 mb-8">
-        <div className="bg-primary/20 p-2 rounded-lg text-primary">
-          <ShieldCheck className="w-8 h-8" />
-        </div>
-        <div>
-          <h1 className="text-3xl font-bold text-text">Platform Overview</h1>
-          <p className="text-textMuted">Superadmin Analytics Dashboard</p>
+    <div className="container mx-auto px-4 py-8 max-w-8xl">
+      <div className="bg-slate-900 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-transparent to-transparent" />
+        <div className="container mx-auto px-6 py-10 max-w-8xl relative">
+          <h1 className="text-3xl font-semibold text-white">Platform overview</h1>
+          <p className="text-sm text-slate-400 mt-1.5">Usage and revenue across the whole platform.</p>
         </div>
       </div>
 

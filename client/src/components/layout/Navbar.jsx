@@ -34,7 +34,7 @@ const Navbar = () => {
   const isActive = (path) => location.pathname === path || (path !== '/' && location.pathname.startsWith(path));
 
   const navLinkClass = (path) =>
-    `relative text-sm font-semibold pb-0.5 transition-colors duration-200 ${
+    `relative text-base font-semibold pb-0.5 transition-colors duration-200 ${
       isActive(path) ? 'text-primary' : 'text-slate-600 hover:text-slate-900'
     }`;
 
@@ -53,13 +53,7 @@ const Navbar = () => {
         <div className="container mx-auto flex items-center justify-between px-4 h-16">
           {/* ── Logo ── */}
           <Link to="/" className="flex items-center gap-2.5 group flex-shrink-0">
-            <div
-              className="p-2 rounded-xl flex-shrink-0"
-              style={{ background: 'linear-gradient(135deg, #10b981 0%, #06b6d4 100%)', boxShadow: '0 4px 12px rgba(16,185,129,0.3)' }}
-            >
-              <Calendar className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-lg font-bold text-slate-900 tracking-tight">
+            <span className="text-2xl font-bold text-slate-900 tracking-tight">
               Event<span style={{ color: '#10b981' }}>io</span>
             </span>
           </Link>
@@ -98,7 +92,7 @@ const Navbar = () => {
                       {user.name?.charAt(0).toUpperCase()}
                     </div>
                   )}
-                  <span className="text-sm font-semibold text-slate-700 hidden sm:block">
+                  <span className="text-base font-semibold text-slate-700 hidden sm:block">
                     {user.name?.split(' ')[0]}
                   </span>
                 </Link>
@@ -113,13 +107,13 @@ const Navbar = () => {
             ) : (
               <>
                 <Link to="/login" className="hidden sm:block">
-                  <button className="px-4 py-2 text-sm font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all duration-200">
+                  <button className="px-4 py-2 text-base font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition-all duration-200">
                     Log in
                   </button>
                 </Link>
                 <Link to="/register">
                   <button
-                    className="px-4 py-2 text-sm font-semibold text-white rounded-xl transition-all duration-200 hover:-translate-y-px"
+                    className="px-4 py-2 text-base font-semibold text-white rounded-xl transition-all duration-200 hover:-translate-y-px"
                     style={{
                       background: 'linear-gradient(135deg, #10b981 0%, #06b6d4 100%)',
                       boxShadow: '0 4px 12px rgba(16,185,129,0.35)',
@@ -151,27 +145,27 @@ const Navbar = () => {
             onClick={() => setMobileOpen(false)}
           />
           <div className="absolute top-16 left-0 right-0 bg-white border-b border-slate-100 shadow-xl p-4 flex flex-col gap-1">
-            <Link to="/" className="px-4 py-3 rounded-xl text-slate-700 font-semibold hover:bg-slate-50 transition-colors">
+            <Link to="/" className="px-4 py-3 rounded-xl text-base text-slate-700 font-semibold hover:bg-slate-50 transition-colors">
               Home
             </Link>
-            <Link to="/events" className="px-4 py-3 rounded-xl text-slate-700 font-semibold hover:bg-slate-50 transition-colors">
+            <Link to="/events" className="px-4 py-3 rounded-xl text-base text-slate-700 font-semibold hover:bg-slate-50 transition-colors">
               Browse Events
             </Link>
             {user && (
-              <Link to={getDashboardLink()} className="px-4 py-3 rounded-xl text-slate-700 font-semibold hover:bg-slate-50 transition-colors">
+              <Link to={getDashboardLink()} className="px-4 py-3 rounded-xl text-base text-slate-700 font-semibold hover:bg-slate-50 transition-colors">
                 Dashboard
               </Link>
             )}
             {!user && (
               <div className="flex gap-2 mt-3 pt-3 border-t border-slate-100">
                 <Link to="/login" className="flex-1">
-                  <button className="w-full py-2.5 border-2 border-slate-200 rounded-xl text-sm font-semibold text-slate-700 hover:border-slate-300 transition-colors">
+                  <button className="w-full py-2.5 border-2 border-slate-200 rounded-xl text-base font-semibold text-slate-700 hover:border-slate-300 transition-colors">
                     Log in
                   </button>
                 </Link>
                 <Link to="/register" className="flex-1">
                   <button
-                    className="w-full py-2.5 text-sm font-semibold text-white rounded-xl"
+                    className="w-full py-2.5 text-base font-semibold text-white rounded-xl"
                     style={{ background: 'linear-gradient(135deg, #10b981 0%, #06b6d4 100%)' }}
                   >
                     Get Started
