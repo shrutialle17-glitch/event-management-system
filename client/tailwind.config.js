@@ -54,7 +54,7 @@ export default {
 
         "inner-glow": "inset 0 1px 0 rgba(255,255,255,0.5)",
 
-        button: {
+        button: 
           "0 4px 15px rgba(0,103,79,.30)",
 
           "button-hover": "0 8px 24px rgba(0,103,79,.40)",
@@ -125,4 +125,4 @@ export default {
   },
   plugins: [],
 }
-};
+
