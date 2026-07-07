@@ -118,7 +118,7 @@ const BrowseEvents = () => {
               className="px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200"
               style={
                 timeParam === tab.key
-                  ? { background: 'linear-gradient(135deg,#10b981,#06b6d4)', color: 'white', boxShadow: '0 4px 12px rgba(16,185,129,0.3)' }
+                  ? { background: 'linear-gradient(135deg,#00674F,#06b6d4)', color: 'white', boxShadow: '0 4px 12px rgba(16,185,129,0.3)' }
                   : { color: '#64748b' }
               }
             >

@@ -101,7 +101,7 @@ const QRScanner = () => {
           <div className="flex items-center gap-3">
             <div
               className="w-12 h-12 rounded-2xl flex items-center justify-center text-white flex-shrink-0"
-              style={{ background: 'linear-gradient(135deg,#10b981,#06b6d4)', boxShadow: '0 4px 12px rgba(16,185,129,0.3)' }}
+              style={{ background: 'linear-gradient(135deg,#00674F,#06b6d4)', boxShadow: '0 4px 12px rgba(16,185,129,0.3)' }}
             >
               <ScanLine className="w-6 h-6" />
             </div>
@@ -126,7 +126,7 @@ const QRScanner = () => {
               className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200"
               style={
                 mode === tab.key
-                  ? { background: 'linear-gradient(135deg,#10b981,#06b6d4)', color: 'white', boxShadow: '0 4px 12px rgba(16,185,129,0.3)' }
+                  ? { background: 'linear-gradient(135deg,#00674F,#06b6d4)', color: 'white', boxShadow: '0 4px 12px rgba(16,185,129,0.3)' }
                   : { color: '#64748b' }
               }
             >
@@ -207,7 +207,7 @@ const QRScanner = () => {
             <div className="p-8">
               <div className="text-center mb-8">
                 <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 text-white"
-                     style={{ background: 'linear-gradient(135deg,#10b981,#06b6d4)' }}>
+                     style={{ background: 'linear-gradient(135deg,#00674F,#06b6d4)' }}>
                   <Keyboard className="w-8 h-8" />
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 mb-1">Manual Check-In</h3>

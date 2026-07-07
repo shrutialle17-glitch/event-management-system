@@ -8,7 +8,7 @@
 
 @layer base {
   :root {
-    --gradient-primary: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+    --gradient-primary: linear-gradient(135deg, #00674F 0%, #008A68 100%);
     --gradient-hero: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f3460 100%);
     --shadow-glow: 0 0 40px rgba(16, 185, 129, 0.15);
     --shadow-card: 0 4px 24px rgba(15, 23, 42, 0.08), 0 1px 4px rgba(15, 23, 42, 0.04);
@@ -151,7 +151,7 @@
 
   .premium-input:focus {
     outline: none;
-    border-color: #10b981;
+    border-color: #00674F;
     box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.12), 0 1px 3px rgba(15, 23, 42, 0.05);
   }
 
@@ -310,7 +310,7 @@
 /* Links inside scanner */
 #qr-reader-container a {
   cursor: pointer !important;
-  color: #10b981 !important;
+  color: #00674F !important;
   text-decoration: underline !important;
   font-weight: 500 !important;
   font-size: 0.85rem !important;
@@ -335,8 +335,8 @@
 }
 #qr-reader-container button:hover {
   background: #f8fafc !important;
-  border-color: #10b981 !important;
-  color: #10b981 !important;
+  border-color: #00674F !important;
+  color: #00674F !important;
 }
 /* Select/dropdown for camera choice */
 #qr-reader-container select {

@@ -107,7 +107,7 @@ const EventFeedbackGallery = () => {
               label: 'Gallery Photos',
               value: gallery.length,
               sub: `${gallery.reduce((s, i) => s + (i.likes?.length || 0), 0)} total likes`,
-              style: 'linear-gradient(135deg,#10b981,#06b6d4)',
+              style: 'linear-gradient(135deg,#00674F,#06b6d4)',
             },
             {
               label: 'Comments',
@@ -138,7 +138,7 @@ const EventFeedbackGallery = () => {
               className="px-6 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200"
               style={
                 activeTab === tab.key
-                  ? { background: 'linear-gradient(135deg,#10b981,#06b6d4)', color: 'white', boxShadow: '0 4px 12px rgba(16,185,129,0.3)' }
+                  ? { background: 'linear-gradient(135deg,#00674F,#06b6d4)', color: 'white', boxShadow: '0 4px 12px rgba(16,185,129,0.3)' }
                   : { color: '#64748b' }
               }
             >
@@ -195,7 +195,7 @@ const EventFeedbackGallery = () => {
                     <div key={fb._id} className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
                       <div className="flex items-center gap-3 mb-3">
                         <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold flex-shrink-0"
-                             style={{ background: 'linear-gradient(135deg,#10b981,#06b6d4)' }}>
+                             style={{ background: 'linear-gradient(135deg,#00674F,#06b6d4)' }}>
                           {fb.user?.name?.charAt(0)}
                         </div>
                         <div className="flex-grow">
@@ -294,7 +294,7 @@ const EventFeedbackGallery = () => {
               {/* Uploader */}
               <div className="p-4 border-b border-slate-100 flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold flex-shrink-0"
-                     style={{ background: 'linear-gradient(135deg,#10b981,#06b6d4)' }}>
+                     style={{ background: 'linear-gradient(135deg,#00674F,#06b6d4)' }}>
                   {selectedItem.uploadedBy?.name?.charAt(0) || 'A'}
                 </div>
                 <div>
@@ -308,7 +308,7 @@ const EventFeedbackGallery = () => {
                 {selectedItem.caption && (
                   <div className="flex gap-3">
                     <div className="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-xs flex-shrink-0"
-                         style={{ background: 'linear-gradient(135deg,#10b981,#06b6d4)' }}>
+                         style={{ background: 'linear-gradient(135deg,#00674F,#06b6d4)' }}>
                       {selectedItem.uploadedBy?.name?.charAt(0) || 'A'}
                     </div>
                     <p className="text-sm text-slate-700">
@@ -367,7 +367,7 @@ const EventFeedbackGallery = () => {
                     type="submit"
                     disabled={!commentText.trim() || commenting}
                     className="w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-200 disabled:opacity-40"
-                    style={{ background: 'linear-gradient(135deg,#10b981,#06b6d4)' }}
+                    style={{ background: 'linear-gradient(135deg,#00674F,#06b6d4)' }}
                   >
                     <Send className="w-4 h-4 text-white" />
                   </button>

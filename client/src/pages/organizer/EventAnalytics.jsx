@@ -39,7 +39,7 @@ const EventAnalytics = () => {
   const revenue = registrations.filter(r => r.paymentStatus === 'paid').length * event.price;
 
   const statusData = [
-    { name: 'Checked In', value: checkedIn, color: '#10B981' },
+    { name: 'Checked In', value: checkedIn, color: '#00674F' },
     { name: 'Pending', value: pending, color: '#3B82F6' },
     { name: 'Cancelled', value: cancelled, color: '#EF4444' },
   ].filter(d => d.value > 0);
@@ -113,7 +113,7 @@ const EventAnalytics = () => {
                   <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748B' }} />
                   <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#64748B' }} />
                   <Tooltip cursor={{ fill: '#f8fafc' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }} />
-                  <Bar dataKey="count" fill="#10B981" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="count" fill="#00674F" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             ) : (

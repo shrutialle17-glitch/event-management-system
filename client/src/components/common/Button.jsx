@@ -4,9 +4,9 @@ const Button = ({ children, variant = 'primary', className = '', isLoading = fal
   const baseStyle = "inline-flex items-center justify-center gap-2 font-semibold rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none";
   
   const variants = {
-    primary: "bg-gradient-primary text-white shadow-button hover:shadow-button-hover hover:-translate-y-0.5 focus:ring-primary",
+    primary: "bg-gradient-primary text-white shadow-button hover:shadow-button-hover hover:-translate-y-1 focus:ring-primary",
     secondary: "bg-secondary hover:bg-secondary-dark text-white shadow-sm hover:shadow-md hover:-translate-y-0.5 focus:ring-secondary",
-    outline: "border-2 border-primary text-primary bg-white hover:bg-primary/5 hover:-translate-y-0.5 focus:ring-primary shadow-sm",
+    outline: "border-2 border-[#00674F] text-[#00674F] bg-transparent hover:bg-[#00674F] hover:text-white transition-all duration-200",
     ghost: "text-textMuted hover:text-text hover:bg-slate-100 focus:ring-slate-200",
     danger: "bg-red-500 hover:bg-red-600 text-white shadow-sm hover:shadow-md hover:-translate-y-0.5 focus:ring-red-400",
     dark: "bg-slate-900 hover:bg-slate-800 text-white shadow-sm hover:shadow-md hover:-translate-y-0.5 focus:ring-slate-700",

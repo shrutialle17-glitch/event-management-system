@@ -4,7 +4,7 @@
 
 export const roleTheme = {
   // Emerald
-  user:      { accent: '16 185 129', accentDark: '5 150 105', accentLight: '52 211 153', hex: '#10B981', label: 'primary' },
+  user:      { accent: '16 185 129', accentDark: '5 150 105', accentLight: '52 211 153', hex: '#00674F', label: 'primary' },
   // Teal
   organizer: { accent: '20 184 166', accentDark: '13 148 136', accentLight: '94 234 212', hex: '#14B8A6', label: 'secondary' },
   // Cyan

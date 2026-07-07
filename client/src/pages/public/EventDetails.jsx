@@ -212,7 +212,7 @@ const EventDetails = () => {
                           <div key={fb._id} className="bg-white rounded-xl p-4 shadow-sm">
                             <div className="flex items-center gap-2 mb-1.5">
                               <div className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold flex-shrink-0"
-                                   style={{ background: 'linear-gradient(135deg,#10b981,#06b6d4)' }}>
+                                   style={{ background: 'linear-gradient(135deg,#00674F,#06b6d4)' }}>
                                 {fb.user?.name?.charAt(0)}
                               </div>
                               <span className="font-semibold text-slate-900 text-sm">{fb.user?.name}</span>
