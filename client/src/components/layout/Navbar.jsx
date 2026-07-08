@@ -59,15 +59,14 @@ const Navbar = () => {
       >
         <div className="container mx-auto flex items-center justify-between px-4 h-16">
           {/* ── Logo ── */}
-          <Link
-            to="/"
-            className="flex items-center gap-2.5 group flex-shrink-0"
-          >
+          <Link to="/" className="flex items-center gap-2.5 group flex-shrink-0">
+            <div className="bg-primary/10 p-1.5 rounded-lg text-primary group-hover:bg-primary/20 transition-colors">
+              <Calendar className="w-6 h-6" />
+            </div>
             <span className="text-2xl font-bold text-slate-900 tracking-tight">
-              Event<span style={{ color: "#00674F" }}>io</span>
+              Event<span className="text-primary">io</span>
             </span>
           </Link>
-
           {/* ── Desktop Nav Links ── */}
           <div className="hidden md:flex items-center gap-7">
             <Link to="/" className={navLinkClass("/")}>
