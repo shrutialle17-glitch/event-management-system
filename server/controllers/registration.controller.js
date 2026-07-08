@@ -31,10 +31,12 @@ const createRegistration = async (req, res) => {
 
     if (event.registeredCount >= event.capacity) {
       isWaitlisted = true;
+
       const waitlistCount = await Registration.countDocuments({
         event: eventId,
         status: "waitlisted",
       });
+
       waitlistPosition = waitlistCount + 1;
     }
 
@@ -50,7 +52,7 @@ const createRegistration = async (req, res) => {
         return sendError(
           res,
           409,
-          "You have already registered for this event",
+          "You have already registered for this event"
         );
       }
 
@@ -59,17 +61,22 @@ const createRegistration = async (req, res) => {
         ? waitlistPosition
         : undefined;
       registration.paymentStatus = event.price > 0 ? "paid" : "free";
+
       await registration.save();
+
       ticketId = registration.ticketId;
     } else {
       ticketId = `TKT-${nanoid(8).toUpperCase()}`;
+
       try {
         registration = await Registration.create({
           user: userId,
           event: eventId,
           ticketId,
           status: isWaitlisted ? "waitlisted" : "registered",
-          waitlistPosition: isWaitlisted ? waitlistPosition : undefined,
+          waitlistPosition: isWaitlisted
+            ? waitlistPosition
+            : undefined,
           paymentStatus: event.price > 0 ? "paid" : "free",
         });
       } catch (err) {
@@ -77,9 +84,10 @@ const createRegistration = async (req, res) => {
           return sendError(
             res,
             409,
-            "You have already registered for this event",
+            "You have already registered for this event"
           );
         }
+
         throw err;
       }
     }
@@ -90,59 +98,90 @@ const createRegistration = async (req, res) => {
         subject: `You're on the waitlist for ${event.title}`,
         html: waitlistTemplate(req.user, event, waitlistPosition),
       });
+
       return sendSuccess(res, 201, "Added to waitlist", registration);
     }
 
-    // Generate QR code and upload to Cloudinary
-    const { qrToken, qrImageUrl, qrBuffer } = await generateQR(
-      registration._id,
-      eventId,
-    );
-
-    // Update registration with QR details
-    registration.qrToken = qrToken;
-    registration.qrImageUrl = qrImageUrl;
-    await registration.save();
-
-    // Increment event registered count
+    // Increment registered count immediately
     event.registeredCount += 1;
     await event.save();
 
-    // Send confirmation email + in-app notification
-    await notify({
-      recipientIds: [req.user._id],
-      type: "registration-confirmation",
-      title: `Registration Confirmed: ${event.title}`,
-      message: `You have successfully registered for ${event.title}.`,
-      eventId: event._id,
-      event: event,
-      ticketId: ticketId,
-      attachments: [
-        {
-          filename: "ticket-qr.png",
-          content: qrBuffer,
-        },
-      ],
-    });
+    // Respond immediately
+    sendSuccess(res, 201, "Registration successful", registration);
 
-    // Notify organizer
-    await notify({
-      recipientIds: [event.organizer],
-      type: "new-registration-organizer",
-      title: "New registration",
-      message: `${req.user.name} just registered for ${event.title}`,
-      eventId: event._id,
-      emailTemplateData: { event, registrant: req.user },
-    });
+    // Background Tasks
+    (async () => {
+      try {
+        console.time("generateQR");
 
-    // Check early-bird badge
-    const daysUntilEvent =
-      (new Date(event.date) - new Date()) / (1000 * 60 * 60 * 24);
-    if (daysUntilEvent > 7) {
-      await checkAndAwardBadges(req.user._id, "early-bird");
-    }
+        const { qrToken, qrImageUrl, qrBuffer } = await generateQR(
+          registration._id,
+          eventId
+        );
 
-    return sendSuccess(res, 201, "Registration successful", registration);
+        console.timeEnd("generateQR");
+
+        registration.qrToken = qrToken;
+        registration.qrImageUrl = qrImageUrl;
+        await registration.save();
+
+        console.time("notify-user");
+
+        await notify({
+          recipientIds: [req.user._id],
+          type: "registration-confirmation",
+          title: `Registration Confirmed: ${event.title}`,
+          message: `You have successfully registered for ${event.title}.`,
+          eventId: event._id,
+          event,
+          ticketId,
+          attachments: [
+            {
+              filename: "ticket-qr.png",
+              content: qrBuffer,
+            },
+          ],
+        });
+
+        console.timeEnd("notify-user");
+
+        console.time("notify-organizer");
+
+        await notify({
+          recipientIds: [event.organizer],
+          type: "new-registration-organizer",
+          title: "New registration",
+          message: `${req.user.name} just registered for ${event.title}`,
+          eventId: event._id,
+          emailTemplateData: {
+            event,
+            registrant: req.user,
+          },
+        });
+
+        console.timeEnd("notify-organizer");
+
+        console.time("badge");
+
+        const daysUntilEvent =
+          (new Date(event.date) - new Date()) /
+          (1000 * 60 * 60 * 24);
+
+        if (daysUntilEvent > 7) {
+          await checkAndAwardBadges(
+            req.user._id,
+            "early-bird"
+          );
+        }
+
+        console.timeEnd("badge");
+      } catch (err) {
+        console.error(
+          "Background registration tasks failed:",
+          err
+        );
+      }
+    })();
   } catch (error) {
     return sendError(res, 500, error.message);
   }
