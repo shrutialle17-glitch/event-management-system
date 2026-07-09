@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -24,6 +24,7 @@ const eventSchema = z.object({
 
 const CreateEvent = () => {
   const navigate = useNavigate();
+  const [bannerFile, setBannerFile] = useState(null);
   
   const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm({
     resolver: zodResolver(eventSchema),
@@ -40,10 +41,20 @@ const CreateEvent = () => {
 
   const onSubmit = async (data) => {
     try {
+      const formData = new FormData();
+      Object.keys(data).forEach(key => {
+        formData.append(key, data[key]);
+      });
+      if (bannerFile) {
+        formData.append('banner', bannerFile);
+      }
+
       // Send data to backend
-      const res = await axiosInstance.post('/events', data);
+      const res = await axiosInstance.post('/events', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
       toast.success('Event created successfully');
-      // Redirect to edit page to allow banner upload
+      // Redirect to edit page to allow further changes
       navigate(`/organizer/events/${res.data.data._id}/edit`);
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to create event');
@@ -61,6 +72,16 @@ const CreateEvent = () => {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-text mb-1">Event Banner</label>
+              <input 
+                type="file" 
+                accept="image/*"
+                onChange={(e) => setBannerFile(e.target.files[0])}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-primary focus:ring-1 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20" 
+              />
+            </div>
+
             <div>
               <label className="block text-sm font-medium text-text mb-1">Event Title</label>
               <input 

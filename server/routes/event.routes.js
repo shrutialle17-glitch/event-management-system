@@ -33,17 +33,20 @@ const eventValidation = [
 // Public routes
 router.get('/stats', getPublicStats);
 router.get('/', getEvents);
-router.get('/:id', getEventById);
+
 
 // Protected routes
 router.use(verifyToken);
 
 router.get('/organizer/mine', requireRole(['organizer', 'admin']), getMyEvents);
 
-router.post('/', requireRole(['organizer', 'admin']), validate(eventValidation), createEvent);
+router.post('/', requireRole(['organizer', 'admin']), upload.single('banner'), validate(eventValidation), createEvent);
+
 router.put('/:id', requireRole(['organizer', 'admin']), validate(eventValidation), updateEvent);
 router.patch('/:id/cancel', requireRole(['organizer', 'admin']), cancelEvent);
 router.delete('/:id', requireRole(['organizer', 'admin']), deleteEvent);
 router.post('/:id/banner', requireRole(['organizer', 'admin']), upload.single('banner'), uploadEventBanner);
+
+router.get('/:id', getEventById);
 
 module.exports = router;

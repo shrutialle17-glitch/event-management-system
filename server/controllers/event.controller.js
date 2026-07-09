@@ -12,6 +12,12 @@ const createEvent = async (req, res) => {
   try {
     const eventData = { ...req.body, organizer: req.user._id };
     
+    // NEW: If a file is uploaded, upload it to Cloudinary
+    if (req.file) {
+      const result = await uploadToCloudinary(req.file.buffer);
+      eventData.bannerUrl = result.secure_url;
+    }
+
     // Prevent organizers from publishing directly without admin approval
     if (req.user.role !== 'admin' && eventData.status === 'published') {
       eventData.status = 'pending-approval';
@@ -23,6 +29,7 @@ const createEvent = async (req, res) => {
     return sendError(res, 500, error.message);
   }
 };
+
 
 // Get All Events
 const getEvents = async (req, res) => {
